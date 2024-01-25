@@ -35,12 +35,18 @@ class NativeResolver extends Resolver
     private array $siteaccessGroupsBySiteaccess;
 
     private array $cache = [];
+    private Handler $persistenceHandler;
+    private int $recursionLimit;
+    private ConfigResolverInterface $configResolver;
 
     public function __construct(
-        private readonly Handler $persistenceHandler,
-        private readonly int $recursionLimit,
-        private readonly ConfigResolverInterface $configResolver,
+        Handler $persistenceHandler,
+        int $recursionLimit,
+        ConfigResolverInterface $configResolver
     ) {
+        $this->persistenceHandler = $persistenceHandler;
+        $this->recursionLimit = $recursionLimit;
+        $this->configResolver = $configResolver;
     }
 
     public function setSiteaccess(?SiteAccess $currentSiteAccess = null): void

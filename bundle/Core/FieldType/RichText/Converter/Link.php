@@ -22,12 +22,20 @@ use function sprintf;
 
 class Link implements Converter
 {
+    private Repository $repository;
+    private LoadService $loadService;
+    private RouterInterface $router;
+    private LoggerInterface $logger;
+
     public function __construct(
-        private readonly Repository $repository,
-        private readonly LoadService $loadService,
-        private readonly RouterInterface $router,
-        private readonly LoggerInterface $logger = new NullLogger(),
+        Repository $repository,
+        LoadService $loadService,
+        RouterInterface $router,
     ) {
+        $this->repository = $repository;
+        $this->loadService = $loadService;
+        $this->router = $router;
+        $this->logger = new NullLogger();
     }
 
     public function convert(DOMDocument $xmlDoc): DOMDocument

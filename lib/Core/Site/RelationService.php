@@ -33,11 +33,18 @@ class RelationService implements RelationServiceInterface
 {
     use SearchResultExtractorTrait;
 
+    private SiteInterface $site;
+    private RelationResolverRegistry $relationResolverRegistry;
+    private LoggerInterface $logger;
+
     public function __construct(
-        private readonly SiteInterface $site,
-        private readonly RelationResolverRegistry $relationResolverRegistry,
-        private readonly LoggerInterface $logger,
+        SiteInterface $site,
+        RelationResolverRegistry $relationResolverRegistry,
+        LoggerInterface $logger
     ) {
+        $this->site = $site;
+        $this->relationResolverRegistry = $relationResolverRegistry;
+        $this->logger = $logger;
     }
 
     public function loadFieldRelation(

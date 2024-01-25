@@ -25,12 +25,21 @@ use Pagerfanta\Pagerfanta;
  */
 final class QueryExecutor
 {
+    private QueryTypeRegistry $queryTypeRegistry;
+    private FilterService $filterService;
+    private FindService $findService;
+    private Repository $repository;
+
     public function __construct(
-        private readonly QueryTypeRegistry $queryTypeRegistry,
-        private readonly FilterService $filterService,
-        private readonly FindService $findService,
-        private readonly Repository $repository,
+        QueryTypeRegistry $queryTypeRegistry,
+        FilterService $filterService,
+        FindService $findService,
+        Repository $repository
     ) {
+        $this->queryTypeRegistry = $queryTypeRegistry;
+        $this->filterService = $filterService;
+        $this->findService = $findService;
+        $this->repository = $repository;
     }
 
     /**

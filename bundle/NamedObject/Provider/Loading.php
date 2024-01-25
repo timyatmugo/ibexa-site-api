@@ -29,13 +29,21 @@ use function sprintf;
 final class Loading extends Provider
 {
     private ?array $configuration = null;
+    private LoadService $loadService;
+    private ?TagsService $tagsService;
+    private ParameterProcessor $parameterProcessor;
+    private ConfigResolverInterface $configResolver;
 
     public function __construct(
-        private readonly LoadService $loadService,
-        private readonly ?TagsService $tagsService,
-        private readonly ParameterProcessor $parameterProcessor,
-        private readonly ConfigResolverInterface $configResolver,
+        LoadService $loadService,
+        ?TagsService $tagsService,
+        ParameterProcessor $parameterProcessor,
+        ConfigResolverInterface $configResolver
     ) {
+        $this->loadService = $loadService;
+        $this->tagsService = $tagsService;
+        $this->parameterProcessor = $parameterProcessor;
+        $this->configResolver = $configResolver;
     }
 
     public function hasContent(string $name): bool

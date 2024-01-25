@@ -17,10 +17,14 @@ use function sprintf;
 
 class ImageRuntime
 {
+    private VariationHandler $imageVariationService;
+    private LoggerInterface $logger;
+
     public function __construct(
-        private readonly VariationHandler $imageVariationService,
-        private readonly LoggerInterface $logger = new NullLogger(),
+        VariationHandler $imageVariationService
     ) {
+        $this->imageVariationService = $imageVariationService;
+        $this->logger = new NullLogger();
     }
 
     /**

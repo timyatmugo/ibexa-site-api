@@ -31,23 +31,25 @@ use function sprintf;
 final class Location extends APILocation
 {
     protected RepoLocation $innerLocation;
-    private readonly string $languageCode;
+    private string $languageCode;
     private ?APIContentInfo $contentInfo = null;
     private ?APILocation $internalParent = null;
     private ?APIContent $internalContent = null;
-    private readonly VersionInfo $innerVersionInfo;
-    private readonly Site $site;
-    private readonly DomainObjectMapper $domainObjectMapper;
+    private VersionInfo $innerVersionInfo;
+    private Site $site;
+    private DomainObjectMapper $domainObjectMapper;
+    private LoggerInterface $logger;
 
     public function __construct(
         array $properties,
-        private readonly LoggerInterface $logger,
+        LoggerInterface $logger
     ) {
         $this->site = $properties['site'];
         $this->domainObjectMapper = $properties['domainObjectMapper'];
         $this->innerVersionInfo = $properties['innerVersionInfo'];
         $this->innerLocation = $properties['innerLocation'];
         $this->languageCode = $properties['languageCode'];
+        $this->logger = $logger;
 
         unset(
             $properties['site'],

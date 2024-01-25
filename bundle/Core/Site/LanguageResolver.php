@@ -23,12 +23,20 @@ final class LanguageResolver extends BaseLanguageResolver
 {
     private SiteAccess $currentSiteaccess;
 
+    private BaseSettings $settings;
+    private Resolver $siteaccessResolver;
+    private ConfigResolverInterface $configResolver;
+    private LoggerInterface $logger;
+
     public function __construct(
-        private readonly BaseSettings $settings,
-        private readonly Resolver $siteaccessResolver,
-        private readonly ConfigResolverInterface $configResolver,
-        private readonly LoggerInterface $logger = new NullLogger(),
+        BaseSettings $settings,
+        Resolver $siteaccessResolver,
+        ConfigResolverInterface $configResolver
     ) {
+        $this->settings = $settings;
+        $this->siteaccessResolver = $siteaccessResolver;
+        $this->configResolver = $configResolver;
+        $this->logger = new NullLogger();
     }
 
     /** @noinspection PhpUnused */

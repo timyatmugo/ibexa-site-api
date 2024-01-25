@@ -19,10 +19,12 @@ use Netgen\TagsBundle\API\Repository\Values\Tags\Tag;
 final class Caching extends Provider
 {
     private array $cache = [];
+    private Provider $provider;
 
     public function __construct(
-        private readonly Provider $provider,
+        Provider $provider
     ) {
+        $this->provider = $provider;
     }
 
     public function hasContent(string $name): bool

@@ -25,12 +25,18 @@ use function sprintf;
 final class QueryDefinitionMapper
 {
     private ?array $namedQueryConfiguration = null;
+    private QueryTypeRegistry $queryTypeRegistry;
+    private ParameterProcessor $parameterProcessor;
+    private ConfigResolverInterface $configResolver;
 
     public function __construct(
-        private readonly QueryTypeRegistry $queryTypeRegistry,
-        private readonly ParameterProcessor $parameterProcessor,
-        private readonly ConfigResolverInterface $configResolver,
+        QueryTypeRegistry $queryTypeRegistry,
+        ParameterProcessor $parameterProcessor,
+        ConfigResolverInterface $configResolver
     ) {
+        $this->queryTypeRegistry = $queryTypeRegistry;
+        $this->parameterProcessor = $parameterProcessor;
+        $this->configResolver = $configResolver;
     }
 
     /**

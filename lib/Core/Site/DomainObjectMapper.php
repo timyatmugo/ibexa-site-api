@@ -30,17 +30,25 @@ use function sprintf;
  */
 final class DomainObjectMapper
 {
-    private readonly FieldTypeService $fieldTypeService;
-    private readonly ContentTypeService $contentTypeService;
+    private FieldTypeService $fieldTypeService;
+    private ContentTypeService $contentTypeService;
+    private SiteInterface $site;
+    private Repository $repository;
+    private bool $failOnMissingField;
+    private LoggerInterface $logger;
 
     public function __construct(
-        private readonly SiteInterface $site,
-        private readonly Repository $repository,
-        private readonly bool $failOnMissingField,
-        private readonly LoggerInterface $logger,
+        SiteInterface $site,
+        Repository $repository,
+        bool $failOnMissingField,
+        LoggerInterface $logger
     ) {
         $this->contentTypeService = $repository->getContentTypeService();
         $this->fieldTypeService = $repository->getFieldTypeService();
+        $this->site = $site;
+        $this->repository = $repository;
+        $this->failOnMissingField = $failOnMissingField;
+        $this->logger = $logger;
     }
 
     /**

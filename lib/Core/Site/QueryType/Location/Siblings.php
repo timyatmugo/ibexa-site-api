@@ -25,11 +25,13 @@ use function sprintf;
  */
 final class Siblings extends Location
 {
+    private LoggerInterface $logger;
+
     public function __construct(
-        Settings $settings,
-        private readonly LoggerInterface $logger = new NullLogger(),
+        Settings $settings
     ) {
         parent::__construct($settings);
+        $this->logger = new NullLogger();
     }
 
     public static function getName(): string

@@ -30,9 +30,9 @@ use Psr\Log\NullLogger;
  */
 class Site implements SiteInterface
 {
-    private readonly ContentService $contentService;
-    private readonly LocationService $locationService;
-    private readonly SearchService $searchService;
+    private ContentService $contentService;
+    private LocationService $locationService;
+    private SearchService $searchService;
 
     private ?DomainObjectMapper $domainObjectMapper = null;
     private ?APIFilterService $filterService = null;
@@ -40,17 +40,29 @@ class Site implements SiteInterface
     private ?APILoadService $loadService = null;
     private ?APIRelationService $relationService = null;
 
+    private BaseSettings $settings;
+    private APILanguageResolver $languageResolver;
+    private Repository $repository;
+    private SearchService $filteringSearchService;
+    private RelationResolverRegistry $relationResolverRegistry;
+    private LoggerInterface $logger;
+
     public function __construct(
-        private readonly BaseSettings $settings,
-        private readonly APILanguageResolver $languageResolver,
-        private readonly Repository $repository,
-        private readonly SearchService $filteringSearchService,
-        private readonly RelationResolverRegistry $relationResolverRegistry,
-        private readonly LoggerInterface $logger = new NullLogger(),
+        BaseSettings $settings,
+        APILanguageResolver $languageResolver,
+        Repository $repository,
+        SearchService $filteringSearchService,
+        RelationResolverRegistry $relationResolverRegistry
     ) {
         $this->contentService = $repository->getContentService();
         $this->locationService = $repository->getLocationService();
         $this->searchService = $repository->getSearchService();
+        $this->settings = $settings;
+        $this->languageResolver = $languageResolver;
+        $this->repository = $repository;
+        $this->filteringSearchService = $filteringSearchService;
+        $this->relationResolverRegistry = $relationResolverRegistry;
+        $this->logger = new NullLogger();
     }
 
     public function getSettings(): BaseSettings

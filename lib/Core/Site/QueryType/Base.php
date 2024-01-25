@@ -41,9 +41,11 @@ abstract class Base implements QueryType
     /** @var \Closure[] */
     private ?array $registeredCriterionBuilders = null;
 
+    private Settings $settings;
     public function __construct(
-        private readonly Settings $settings,
+        Settings $settings
     ) {
+        $this->settings = $settings;
     }
 
     final public function getQuery(array $parameters = []): Query

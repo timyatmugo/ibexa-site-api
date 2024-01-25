@@ -16,12 +16,17 @@ use Netgen\IbexaSiteApi\API\FindService;
  */
 final class SudoFindAdapter extends BaseAdapter
 {
+    private FindService $findService;
+    private Repository $repository;
+
     public function __construct(
         Query $query,
-        private readonly FindService $findService,
-        private readonly Repository $repository,
+        FindService $findService,
+        Repository $repository
     ) {
         parent::__construct($query);
+        $this->findService = $findService;
+        $this->repository = $repository;
     }
 
     protected function executeQuery(Query $query): SearchResult

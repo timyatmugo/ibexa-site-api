@@ -18,11 +18,17 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class InvalidRedirectConfigurationListener implements EventSubscriberInterface
 {
+    private UrlGeneratorInterface $urlGenerator;
+    private ConfigResolverInterface $configResolver;
+    private LoggerInterface $logger;
+
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly ConfigResolverInterface $configResolver,
-        private readonly LoggerInterface $logger = new NullLogger(),
+        UrlGeneratorInterface $urlGenerator,
+        ConfigResolverInterface $configResolver
     ) {
+        $this->urlGenerator = $urlGenerator;
+        $this->configResolver = $configResolver;
+        $this->logger = new NullLogger();
     }
 
     public static function getSubscribedEvents(): array

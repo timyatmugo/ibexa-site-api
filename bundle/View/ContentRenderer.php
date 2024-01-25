@@ -25,11 +25,16 @@ use function sprintf;
  */
 final class ContentRenderer
 {
+    private ContentViewBuilder $viewBuilder;
+    private ViewRenderer $viewRenderer;
+    private LoggerInterface $logger;
     public function __construct(
-        private readonly ContentViewBuilder $viewBuilder,
-        private readonly ViewRenderer $viewRenderer,
-        private readonly LoggerInterface $logger = new NullLogger(),
+        ContentViewBuilder $viewBuilder,
+        ViewRenderer $viewRenderer
     ) {
+        $this->viewBuilder = $viewBuilder;
+        $this->viewRenderer = $viewRenderer;
+        $this->logger = new NullLogger();
     }
 
     /**

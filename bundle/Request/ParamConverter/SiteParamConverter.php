@@ -13,9 +13,12 @@ use function is_a;
 
 abstract class SiteParamConverter implements ParamConverterInterface
 {
+    protected LoadService $loadService;
+
     public function __construct(
-        protected readonly LoadService $loadService,
+        LoadService $loadService
     ) {
+        $this->loadService = $loadService;
     }
 
     public function supports(ParamConverter $configuration): bool

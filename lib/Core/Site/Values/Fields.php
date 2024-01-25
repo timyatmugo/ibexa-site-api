@@ -41,12 +41,21 @@ final class Fields extends APIFields
     /** @var \Netgen\IbexaSiteApi\API\Values\Field[] */
     private array $fieldsByNumericSequence = [];
 
+    private SiteContent $content;
+    private DomainObjectMapper $domainObjectMapper;
+    private bool $failOnMissingField;
+    private LoggerInterface $logger;
+
     public function __construct(
-        private readonly SiteContent $content,
-        private readonly DomainObjectMapper $domainObjectMapper,
-        private readonly bool $failOnMissingField,
-        private readonly LoggerInterface $logger,
+        SiteContent $content,
+        DomainObjectMapper $domainObjectMapper,
+        bool $failOnMissingField,
+        LoggerInterface $logger
     ) {
+        $this->content = $content;
+        $this->domainObjectMapper = $domainObjectMapper;
+        $this->failOnMissingField = $failOnMissingField;
+        $this->logger = $logger;
     }
 
     public function getIterator(): Traversable

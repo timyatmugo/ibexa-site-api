@@ -19,9 +19,12 @@ use function sprintf;
  */
 class QueryRuntime
 {
+    private QueryExecutor $queryExecutor;
+
     public function __construct(
-        private readonly QueryExecutor $queryExecutor,
+        QueryExecutor $queryExecutor
     ) {
+        $this->queryExecutor = $queryExecutor;
     }
 
     public function executeQuery(mixed $context, string $name): Pagerfanta

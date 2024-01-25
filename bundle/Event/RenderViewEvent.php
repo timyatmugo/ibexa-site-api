@@ -9,9 +9,12 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class RenderViewEvent extends Event
 {
+    private View $view;
+
     public function __construct(
-        private readonly View $view,
+        View $view
     ) {
+        $this->view = $view;
     }
 
     public function getView(): View

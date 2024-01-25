@@ -15,6 +15,7 @@ use function sprintf;
 
 class Renderer extends CoreRenderer
 {
+    private string $ngEmbedConfigurationNamespace;
     public function __construct(
         Repository $repository,
         ConfigResolverInterface $configResolver,
@@ -23,10 +24,10 @@ class Renderer extends CoreRenderer
         string $tagConfigurationNamespace,
         string $styleConfigurationNamespace,
         string $embedConfigurationNamespace,
-        private readonly string $ngEmbedConfigurationNamespace,
+        string $ngEmbedConfigurationNamespace,
         ?LoggerInterface $logger = null,
         array $customTagsConfiguration = [],
-        array $customStylesConfiguration = [],
+        array $customStylesConfiguration = []
     ) {
         parent::__construct(
             $repository,
@@ -40,6 +41,7 @@ class Renderer extends CoreRenderer
             $customTagsConfiguration,
             $customStylesConfiguration,
         );
+        $this->ngEmbedConfigurationNamespace = $ngEmbedConfigurationNamespace;
     }
 
     protected function getEmbedTemplateName($resourceType, $isInline, $isDenied): ?string

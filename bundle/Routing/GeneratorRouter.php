@@ -46,15 +46,26 @@ use function str_starts_with;
 class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
 {
     private SiteAccess $currentSiteaccess;
+    private Repository $repository;
+    private UrlAliasGenerator $generator;
+    private Resolver $siteaccessResolver;
+    private ConfigResolverInterface $configResolver;
+    private RequestContext $requestContext;
+    private LoggerInterface $logger;
 
     public function __construct(
-        private readonly Repository $repository,
-        private readonly UrlAliasGenerator $generator,
-        private readonly Resolver $siteaccessResolver,
-        private readonly ConfigResolverInterface $configResolver,
-        private RequestContext $requestContext,
-        private readonly LoggerInterface $logger = new NullLogger(),
+        Repository $repository,
+        UrlAliasGenerator $generator,
+        Resolver $siteaccessResolver,
+        ConfigResolverInterface $configResolver,
+        RequestContext $requestContext
     ) {
+        $this->repository = $repository;
+        $this->generator = $generator;
+        $this->siteaccessResolver = $siteaccessResolver;
+        $this->configResolver = $configResolver;
+        $this->requestContext = $requestContext;
+        $this->logger = new NullLogger();
     }
 
     /** @noinspection PhpUnused */

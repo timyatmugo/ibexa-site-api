@@ -19,13 +19,21 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class ParameterProcessor
 {
     use LanguageExpressionEvaluatorTrait;
+    private ExpressionLanguage $expressionLanguage;
+    private RequestStack $requestStack;
+    private ConfigResolverInterface $configResolver;
+    private Provider $namedObjectProvider;
 
     public function __construct(
-        private readonly ExpressionLanguage $expressionLanguage,
-        private readonly RequestStack $requestStack,
-        private readonly ConfigResolverInterface $configResolver,
-        private readonly Provider $namedObjectProvider,
+        ExpressionLanguage $expressionLanguage,
+        RequestStack $requestStack,
+        ConfigResolverInterface $configResolver,
+        Provider $namedObjectProvider
     ) {
+        $this->expressionLanguage = $expressionLanguage;
+        $this->requestStack = $requestStack;
+        $this->configResolver = $configResolver;
+        $this->namedObjectProvider = $namedObjectProvider;
     }
 
     /**

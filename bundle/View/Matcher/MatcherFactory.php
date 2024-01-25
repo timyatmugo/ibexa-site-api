@@ -18,17 +18,28 @@ use function str_starts_with;
 class MatcherFactory extends ClassNameMatcherFactory
 {
     use ContainerAwareTrait;
+    private ?ViewMatcherRegistry $viewMatcherRegistry;
+    private ConfigResolverInterface $configResolver;
+    private string $parameterName;
+    private ?string $namespace = null;
+    private ?string $scope = null;
 
     public function __construct(
         Repository $repository,
         string $relativeNamespace,
-        private readonly ?ViewMatcherRegistry $viewMatcherRegistry,
-        private readonly ConfigResolverInterface $configResolver,
-        private readonly string $parameterName,
-        private readonly ?string $namespace = null,
-        private readonly ?string $scope = null,
+        ?ViewMatcherRegistry $viewMatcherRegistry,
+        ConfigResolverInterface $configResolver,
+        string $parameterName,
+        ?string $namespace = null,
+        ?string $scope = null
     ) {
         parent::__construct($repository, $relativeNamespace);
+
+        $this->viewMatcherRegistry = $viewMatcherRegistry;
+        $this->configResolver = $configResolver;
+        $this->parameterName = $parameterName;
+        $this->namespace = $namespace;
+        $this->scope = $scope;
     }
 
     public function match(View $view): ?array
