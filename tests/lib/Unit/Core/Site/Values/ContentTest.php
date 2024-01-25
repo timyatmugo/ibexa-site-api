@@ -188,7 +188,7 @@ final class ContentTest extends TestCase
         );
     }
 
-    protected function getSiteMock(): MockObject|Site
+    protected function getSiteMock(): mixed
     {
         if ($this->siteMock !== null) {
             return $this->siteMock;
@@ -221,7 +221,7 @@ final class ContentTest extends TestCase
         return $this->domainObjectMapper;
     }
 
-    protected function getLoadServiceMock(): LoadService|MockObject
+    protected function getLoadServiceMock()
     {
         if ($this->loadServiceMock !== null) {
             return $this->loadServiceMock;
@@ -234,7 +234,7 @@ final class ContentTest extends TestCase
         return $this->loadServiceMock;
     }
 
-    protected function getContentServiceMock(): ContentService|MockObject
+    protected function getContentServiceMock()
     {
         if ($this->contentServiceMock !== null) {
             return $this->contentServiceMock;
@@ -247,7 +247,7 @@ final class ContentTest extends TestCase
         return $this->contentServiceMock;
     }
 
-    protected function getContentTypeServiceMock(): ContentTypeService|MockObject
+    protected function getContentTypeServiceMock()
     {
         if ($this->contentTypeServiceMock !== null) {
             return $this->contentTypeServiceMock;
@@ -268,7 +268,7 @@ final class ContentTest extends TestCase
         return $this->contentTypeServiceMock;
     }
 
-    protected function getFieldTypeServiceMock(): FieldTypeService|MockObject
+    protected function getFieldTypeServiceMock()
     {
         if ($this->fieldTypeServiceMock !== null) {
             return $this->fieldTypeServiceMock;
@@ -281,7 +281,7 @@ final class ContentTest extends TestCase
         return $this->fieldTypeServiceMock;
     }
 
-    protected function getUserServiceMock(): MockObject|UserService
+    protected function getUserServiceMock()
     {
         if ($this->userServiceMock !== null) {
             return $this->userServiceMock;
@@ -294,7 +294,7 @@ final class ContentTest extends TestCase
         return $this->userServiceMock;
     }
 
-    protected function getRepositoryMock(): CoreRepository|MockObject
+    protected function getRepositoryMock()
     {
         if ($this->repositoryMock !== null) {
             return $this->repositoryMock;

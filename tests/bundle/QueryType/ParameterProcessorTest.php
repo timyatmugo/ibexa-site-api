@@ -308,7 +308,7 @@ final class ParameterProcessorTest extends TestCase
         return new ParameterProcessor($expressionLanguage, $requestStack, $configResolver, $namedObjectProvider);
     }
 
-    protected function getConfigResolverMock(): ConfigResolverInterface|MockObject
+    protected function getConfigResolverMock(): mixed
     {
         $configResolverMock = $this->getMockBuilder(ConfigResolverInterface::class)->getMock();
 
@@ -336,7 +336,7 @@ final class ParameterProcessorTest extends TestCase
         return $configResolverMock;
     }
 
-    protected function getNamedObjectProviderMock(): Provider|MockObject
+    protected function getNamedObjectProviderMock()
     {
         $namedObjectProviderMock = $this->getMockBuilder(Provider::class)->getMock();
 
@@ -367,7 +367,7 @@ final class ParameterProcessorTest extends TestCase
         return $namedObjectProviderMock;
     }
 
-    protected function getViewMock(): ContentView|MockObject
+    protected function getViewMock()
     {
         $viewMock = $this->getMockBuilder(ContentView::class)->getMock();
 

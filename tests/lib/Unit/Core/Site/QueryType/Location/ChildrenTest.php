@@ -373,7 +373,7 @@ final class ChildrenTest extends QueryTypeBaseTest
         ];
     }
 
-    protected function getSiteMock(): MockObject|Site
+    protected function getSiteMock(): mixed
     {
         if ($this->siteMock !== null) {
             return $this->siteMock;

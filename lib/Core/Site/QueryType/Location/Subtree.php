@@ -92,7 +92,7 @@ final class Subtree extends Location
      *
      * @return int|int[] array
      */
-    private function getRelativeDepthValue(int $startDepth, array|int $value): array|int
+    private function getRelativeDepthValue(int $startDepth, $value): mixed
     {
         if (is_array($value)) {
             return array_map(

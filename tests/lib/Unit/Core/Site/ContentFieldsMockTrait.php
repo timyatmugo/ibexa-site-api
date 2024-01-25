@@ -55,7 +55,7 @@ trait ContentFieldsMockTrait
      */
     abstract public function internalGetRepoFields(): array;
 
-    protected function getSiteMock(): MockObject|Site
+    protected function getSiteMock(): mixed
     {
         if ($this->siteMock !== null) {
             return $this->siteMock;
@@ -98,7 +98,7 @@ trait ContentFieldsMockTrait
         return $this->domainObjectMapperForContentWithoutFields[$failOnMissingField];
     }
 
-    protected function getRepositoryMock(): CoreRepository|MockObject
+    protected function getRepositoryMock()
     {
         if ($this->repositoryMock !== null) {
             return $this->repositoryMock;
@@ -121,7 +121,7 @@ trait ContentFieldsMockTrait
         return $this->repositoryMock;
     }
 
-    protected function getRepositoryMockForContentWithoutFields(): CoreRepository|MockObject
+    protected function getRepositoryMockForContentWithoutFields()
     {
         if ($this->repositoryMockForContentWithoutFields !== null) {
             return $this->repositoryMockForContentWithoutFields;
@@ -144,7 +144,7 @@ trait ContentFieldsMockTrait
         return $this->repositoryMockForContentWithoutFields;
     }
 
-    protected function getFieldTypeServiceMock(): FieldTypeService|MockObject
+    protected function getFieldTypeServiceMock()
     {
         if ($this->fieldTypeServiceMock !== null) {
             return $this->fieldTypeServiceMock;
@@ -162,7 +162,7 @@ trait ContentFieldsMockTrait
         return $this->fieldTypeServiceMock;
     }
 
-    protected function getFieldTypeMock(): FieldType|MockObject
+    protected function getFieldTypeMock()
     {
         if ($this->fieldTypeMock !== null) {
             return $this->fieldTypeMock;
@@ -179,7 +179,7 @@ trait ContentFieldsMockTrait
         return $this->fieldTypeMock;
     }
 
-    protected function getContentTypeServiceMock(): ContentTypeService|MockObject
+    protected function getContentTypeServiceMock()
     {
         if ($this->contentTypeServiceMock !== null) {
             return $this->contentTypeServiceMock;

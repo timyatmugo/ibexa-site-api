@@ -98,7 +98,7 @@ abstract class Base implements QueryType
      *
      * @return Criterion|Criterion[]|null
      */
-    protected function getFilterCriteria(array $parameters): Criterion|array|null
+    protected function getFilterCriteria(array $parameters): mixed
     {
         return null;
     }
@@ -388,7 +388,7 @@ abstract class Base implements QueryType
         return $sortClauses;
     }
 
-    private function parseSortString(string $string): string|SortClause
+    private function parseSortString(string $string)
     {
         try {
             return $this->getSortClauseParser()->parse($string);
