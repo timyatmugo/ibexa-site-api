@@ -63,7 +63,7 @@ class Link implements Converter
                         $this->loadContent((int) $id),
                         $fragment
                     );
-                } catch (APINotFoundException) {
+                } catch (APINotFoundException $e) {
                     $this->logger->error(
                         sprintf('While generating link for RichText, could not find Content #%s', $id)
                     );
@@ -74,7 +74,7 @@ class Link implements Converter
                         $this->loadLocation((int) $id),
                         $fragment
                     );
-                } catch (APINotFoundException) {
+                } catch (APINotFoundException $e) {
                     $this->logger->error(
                         sprintf('While generating link for RichText, could not find Location #%s', $id)
                     );

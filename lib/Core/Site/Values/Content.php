@@ -481,7 +481,7 @@ final class Content extends APIContent
             function (): ?APIContent {
                 try {
                     return $this->site->getLoadService()->loadContent($this->getContentInfo()->ownerId);
-                } catch (NotFoundException) {
+                } catch (NotFoundException $e) {
                     // Do nothing
                 }
 
@@ -502,7 +502,7 @@ final class Content extends APIContent
 
         try {
             $this->innerOwnerUser = $this->userService->loadUser($this->getContentInfo()->ownerId);
-        } catch (NotFoundException) {
+        } catch (NotFoundException $e) {
             // Do nothing
         }
 
@@ -524,7 +524,7 @@ final class Content extends APIContent
             function (): ?APIContent {
                 try {
                     return $this->site->getLoadService()->loadContent($this->innerVersionInfo->creatorId);
-                } catch (NotFoundException) {
+                } catch (NotFoundException $e) {
                     // Do nothing
                 }
 
@@ -545,7 +545,7 @@ final class Content extends APIContent
 
         try {
             $this->innerModifierUser = $this->userService->loadUser($this->innerVersionInfo->creatorId);
-        } catch (NotFoundException) {
+        } catch (NotFoundException $e) {
             // Do nothing
         }
 

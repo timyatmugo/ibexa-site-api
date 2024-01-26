@@ -110,7 +110,7 @@ class ContentViewBuilder implements ViewBuilder
         if ($location === null) {
             try {
                 $location = $this->locationResolver->getLocation($content);
-            } catch (NotFoundException) {
+            } catch (NotFoundException $e) {
                 // do nothing
             }
         }
