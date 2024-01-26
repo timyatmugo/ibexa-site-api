@@ -18,14 +18,13 @@ use function twig_get_attribute;
 
 final class GetAttrExpressionDecorator extends GetAttrExpression
 {
+    private GetAttrExpression $decoratedExpression;
+
     /** @noinspection MagicMethodsValidityInspection */
 
     /** @noinspection PhpMissingParentConstructorInspection */
-    private GetAttrExpression $decoratedExpression;
-
-    public function __construct(
-        GetAttrExpression $decoratedExpression
-    ) {
+    public function __construct(GetAttrExpression $decoratedExpression)
+    {
         $this->decoratedExpression = $decoratedExpression;
     }
 
@@ -148,6 +147,16 @@ final class GetAttrExpressionDecorator extends GetAttrExpression
         return $this->decoratedExpression->getIterator();
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated
+     */
+    public function setTemplateName($name): void
+    {
+        $this->decoratedExpression->setTemplateName($name);
+    }
+
     public function getTemplateName(): ?string
     {
         return $this->decoratedExpression->getTemplateName();
@@ -169,18 +178,23 @@ final class GetAttrExpressionDecorator extends GetAttrExpression
      * @param bool $ignoreStrictCheck
      * @param bool $sandboxed
      * @param int $lineno
+     * @param mixed $object
+     * @param mixed $item
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     * @throws \Twig\Error\RuntimeError
      */
     public static function twig_get_attribute(
         Environment $env,
         Source $source,
-        mixed $object,
-        mixed $item,
+        $object,
+        $item,
         array $arguments = [],
         $type = 'any',
         $isDefinedTest = false,
         $ignoreStrictCheck = false,
         $sandboxed = false,
-        $lineno = -1,
+        $lineno = -1
     ) {
         if (!$object instanceof Fields) {
             return twig_get_attribute(

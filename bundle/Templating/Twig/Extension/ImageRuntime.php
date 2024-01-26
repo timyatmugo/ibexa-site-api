@@ -21,10 +21,11 @@ class ImageRuntime
     private LoggerInterface $logger;
 
     public function __construct(
-        VariationHandler $imageVariationService
+        VariationHandler $imageVariationService,
+        ?LoggerInterface $logger = null
     ) {
         $this->imageVariationService = $imageVariationService;
-        $this->logger = new NullLogger();
+        $this->logger = $logger ?? new NullLogger();
     }
 
     /**
@@ -47,8 +48,8 @@ class ImageRuntime
                     "Couldn't get variation '%s' for image with id %s: %s",
                     $variationName,
                     $value->id,
-                    $exception->getMessage(),
-                ),
+                    $exception->getMessage()
+                )
             );
         } catch (SourceImageNotFoundException $exception) {
             $this->logger->error(
@@ -56,17 +57,17 @@ class ImageRuntime
                     "Couldn't create variation '%s' for image with id %s because source image can't be found: %s",
                     $variationName,
                     $value->id,
-                    $exception->getMessage(),
-                ),
+                    $exception->getMessage()
+                )
             );
-        } catch (InvalidArgumentException $exception) {
+        } catch (InvalidArgumentException $e) {
             $this->logger->error(
                 sprintf(
                     "Couldn't create variation '%s' for image with id %s because an image could not be created from the given input: %s",
                     $variationName,
                     $value->id,
-                    $exception->getMessage(),
-                ),
+                    $exception->getMessage()
+                )
             );
         }
 

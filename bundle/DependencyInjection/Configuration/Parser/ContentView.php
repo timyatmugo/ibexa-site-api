@@ -278,12 +278,18 @@ class ContentView extends AbstractParser
                     $viewPath,
                     $extendedViewType,
                     $extendedName,
-                    $baseConfig['extends'],
+                    $baseConfig['extends']
                 ),
             );
         }
 
-        $config = array_replace($baseConfig, $config);
+        $replacedConfig = array_replace($baseConfig, $config);
+
+        if ($replacedConfig === null) {
+            throw new InvalidConfigurationException('Could not replace extended config');
+        }
+
+        $config = $replacedConfig;
     }
 
     private function restoreDefaultValues(array &$config): void

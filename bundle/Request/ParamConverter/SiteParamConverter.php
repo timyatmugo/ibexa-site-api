@@ -15,9 +15,8 @@ abstract class SiteParamConverter implements ParamConverterInterface
 {
     protected LoadService $loadService;
 
-    public function __construct(
-        LoadService $loadService
-    ) {
+    public function __construct(LoadService $loadService)
+    {
         $this->loadService = $loadService;
     }
 
@@ -50,5 +49,5 @@ abstract class SiteParamConverter implements ParamConverterInterface
      */
     abstract protected function getPropertyName(): string;
 
-    abstract protected function loadValueObject(int $id): mixed;
+    abstract protected function loadValueObject(int $id);
 }

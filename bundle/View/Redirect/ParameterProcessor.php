@@ -32,8 +32,10 @@ final class ParameterProcessor
      * Return given $value processed with ExpressionLanguage if needed.
      *
      * Parameter $view is used to provide values for evaluation.
+     *
+     * @param mixed $value
      */
-    public function process(mixed $value, ContentView $view): mixed
+    public function process($value, ContentView $view)
     {
         return $this->evaluate(
             $value,

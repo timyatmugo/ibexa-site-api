@@ -109,7 +109,7 @@ final class CriteriaBuilder
         }
 
         throw new InvalidArgumentException(
-            sprintf("Criterion named '%s' is not handled", $definition->name),
+            sprintf("Criterion named '%s' is not handled", $definition->name)
         );
     }
 
@@ -217,11 +217,17 @@ final class CriteriaBuilder
         return new SectionIdentifier($definition->value);
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     */
     private function buildObjectState(CriterionDefinition $definition): ObjectStateIdentifier
     {
         return new ObjectStateIdentifier($definition->target, $definition->value);
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     */
     private function buildSubtree(CriterionDefinition $definition): ?Subtree
     {
         if ($definition->value === null) {
@@ -246,7 +252,12 @@ final class CriteriaBuilder
         return $returnValues;
     }
 
-    private function resolveTimeValue(int|string $value): int
+    /**
+     * @param int|string $value
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function resolveTimeValue($value): int
     {
         if (is_int($value)) {
             return $value;
@@ -256,13 +267,16 @@ final class CriteriaBuilder
 
         if ($timestamp === false) {
             throw new InvalidArgumentException(
-                sprintf("'%s' is invalid time string", $value),
+                sprintf("'%s' is invalid time string", $value)
             );
         }
 
         return $timestamp;
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     */
     private function buildVisible(CriterionDefinition $definition): ?Visible
     {
         if ($definition->value === null) {
@@ -272,6 +286,9 @@ final class CriteriaBuilder
         return new Visible($definition->value);
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     */
     private function buildIsFieldEmpty(CriterionDefinition $definition): ?IsFieldEmpty
     {
         if ($definition->value === null) {

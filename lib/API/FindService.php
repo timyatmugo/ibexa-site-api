@@ -20,7 +20,7 @@ interface FindService
      *
      * @see \Netgen\IbexaSiteApi\API\Values\Content
      *
-     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException If $query is not valid
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
      */
     public function findContent(Query $query): SearchResult;
 
@@ -29,7 +29,7 @@ interface FindService
      *
      * @see \Netgen\IbexaSiteApi\API\Values\Location
      *
-     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException If $query is not valid
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
      */
     public function findLocations(LocationQuery $query): SearchResult;
 }

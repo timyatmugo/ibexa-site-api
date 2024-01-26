@@ -19,14 +19,16 @@ final class FilterAdapter extends BaseAdapter
 {
     private FilterService $filterService;
 
-    public function __construct(
-        Query $query,
-        FilterService $filterService
-    ) {
+    public function __construct(Query $query, FilterService $filterService)
+    {
         parent::__construct($query);
+
         $this->filterService = $filterService;
     }
 
+    /**
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     */
     protected function executeQuery(Query $query): SearchResult
     {
         if ($query instanceof LocationQuery) {

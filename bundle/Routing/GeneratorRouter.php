@@ -74,11 +74,15 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
         $this->currentSiteaccess = $currentSiteAccess;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function generate(
         string $name,
         array $parameters = [],
-        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
     ): string {
+
         $location = $this->resolveLocation($name, $parameters);
 
         unset(
@@ -93,7 +97,7 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
         );
 
         $isSiteApiPrimaryContentView = $this->configResolver->getParameter(
-            'ng_site_api.site_api_is_primary_content_view',
+            'ng_site_api.site_api_is_primary_content_view'
         );
 
         if (isset($parameters['siteaccess']) || !$isSiteApiPrimaryContentView) {
@@ -153,6 +157,9 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
         return $name;
     }
 
+    /**
+     * @throws \Exception
+     */
     private function resolveSiteaccessAndGenerate(APILocation $location, array $parameters, int $referenceType): string
     {
         try {
@@ -162,8 +169,8 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
                 sprintf(
                     'Could not resolve siteaccess for Location #%s, falling back to the current siteaccess: %s',
                     $location->id,
-                    $exception->getMessage(),
-                ),
+                    $exception->getMessage()
+                )
             );
 
             $siteaccess = $this->currentSiteaccess->name;
@@ -178,7 +185,7 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
         $url = $this->generator->generate(
             $location,
             $parameters,
-            UrlGeneratorInterface::ABSOLUTE_URL,
+            UrlGeneratorInterface::ABSOLUTE_URL
         );
 
         if (
@@ -188,7 +195,7 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
             $prefix = $this->getUrlPrefix();
             $prefixLength = mb_strlen($prefix);
 
-            if (str_starts_with($url, $prefix)) {
+            if (mb_strpos($url, $prefix) === 0) {
                 return mb_substr($url, $prefixLength);
             }
 
@@ -196,8 +203,8 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
                 sprintf(
                     'Could not generate path by stripping prefix: URL "%s" does not start with "%s"',
                     $url,
-                    $prefix,
-                ),
+                    $prefix
+                )
             );
         }
 
@@ -220,13 +227,14 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
             $scheme,
             $this->requestContext->getHost(),
             $port,
-            $this->requestContext->getBaseUrl(),
+            $this->requestContext->getBaseUrl()
         );
     }
 
     private function supportsObject($object): bool
     {
-        return $object instanceof Content
+        return
+            $object instanceof Content
             || $object instanceof ContentInfo
             || $object instanceof Location
             || $object instanceof APIContent
@@ -298,7 +306,7 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
 
                 if ($contentInfo->mainLocationId === null) {
                     throw new LogicException(
-                        'Cannot generate an UrlAlias route for Content without the main Location',
+                        'Cannot generate an UrlAlias route for Content without the main Location'
                     );
                 }
 
@@ -339,7 +347,7 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
     private function checkContentLocation(?APILocation $location): APILocation
     {
         return $location ?? throw new LogicException(
-            'Cannot generate an UrlAlias route for Content without the main Location',
+            'Cannot generate an UrlAlias route for Content without the main Location'
         );
     }
 }

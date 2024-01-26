@@ -33,12 +33,12 @@ final class SudoFindAdapter extends BaseAdapter
     {
         if ($query instanceof LocationQuery) {
             return $this->repository->sudo(
-                fn () => $this->findService->findLocations($query),
+                fn () => $this->findService->findLocations($query)
             );
         }
 
         return $this->repository->sudo(
-            fn () => $this->findService->findContent($query),
+            fn () => $this->findService->findContent($query)
         );
     }
 }

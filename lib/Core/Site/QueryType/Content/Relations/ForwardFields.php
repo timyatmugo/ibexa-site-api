@@ -22,11 +22,10 @@ final class ForwardFields extends Content
 {
     private RelationResolverRegistry $relationResolverRegistry;
 
-    public function __construct(
-        Settings $settings,
-        RelationResolverRegistry $relationResolverRegistry
-    ) {
+    public function __construct(Settings $settings, RelationResolverRegistry $relationResolverRegistry)
+    {
         parent::__construct($settings);
+
         $this->relationResolverRegistry = $relationResolverRegistry;
     }
 
@@ -35,6 +34,12 @@ final class ForwardFields extends Content
         return 'SiteAPI:Content/Relations/ForwardFields';
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException
+     * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
+     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired([
@@ -46,7 +51,14 @@ final class ForwardFields extends Content
         $resolver->setAllowedTypes('relation_field', ['string', 'string[]']);
     }
 
-    protected function getFilterCriteria(array $parameters): mixed
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \LogicException
+     * @throws \OutOfBoundsException
+     * @throws \InvalidArgumentException
+     */
+    protected function getFilterCriteria(array $parameters)
     {
         /** @var \Netgen\IbexaSiteApi\API\Values\Content $content */
         $content = $parameters['content'];
@@ -59,7 +71,6 @@ final class ForwardFields extends Content
             $idsGrouped[] = $relationResolver->getRelationIds($field);
         }
 
-        /** @var int[] $relatedContentIds */
         $relatedContentIds = array_merge(...$idsGrouped);
 
         if (empty($relatedContentIds)) {

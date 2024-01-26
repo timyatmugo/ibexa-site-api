@@ -26,11 +26,11 @@ final class Children extends Location
 {
     private LoggerInterface $logger;
 
-    public function __construct(
-        Settings $settings
-    ) {
+    public function __construct(Settings $settings, ?LoggerInterface $logger = null)
+    {
         parent::__construct($settings);
-        $this->logger = new NullLogger();
+
+        $this->logger = $logger ?? new NullLogger();
     }
 
     public static function getName(): string

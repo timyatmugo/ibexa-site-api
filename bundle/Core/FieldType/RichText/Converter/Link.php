@@ -30,7 +30,7 @@ class Link implements Converter
     public function __construct(
         Repository $repository,
         LoadService $loadService,
-        RouterInterface $router,
+        RouterInterface $router
     ) {
         $this->repository = $repository;
         $this->loadService = $loadService;
@@ -55,28 +55,28 @@ class Link implements Converter
             $hrefResolved = '#';
             $href = $link->getAttribute('xlink:href');
             preg_match('~^(.+://)?([^#]*)?(#.*|\\s*)?$~', $href, $matches);
-            [, $scheme, $id, $fragment] = $matches;
+            list(, $scheme, $id, $fragment) = $matches;
 
             if ($scheme === 'ezcontent://') {
                 try {
                     $hrefResolved = $this->generateUrlAliasForContentOrLocation(
                         $this->loadContent((int) $id),
-                        $fragment,
+                        $fragment
                     );
                 } catch (APINotFoundException) {
                     $this->logger->error(
-                        sprintf('While generating link for RichText, could not find Content #%s', $id),
+                        sprintf('While generating link for RichText, could not find Content #%s', $id)
                     );
                 }
             } elseif ($scheme === 'ezlocation://') {
                 try {
                     $hrefResolved = $this->generateUrlAliasForContentOrLocation(
                         $this->loadLocation((int) $id),
-                        $fragment,
+                        $fragment
                     );
                 } catch (APINotFoundException) {
                     $this->logger->error(
-                        sprintf('While generating link for RichText, could not find Location #%s', $id),
+                        sprintf('While generating link for RichText, could not find Location #%s', $id)
                     );
                 }
             } else {
@@ -102,24 +102,24 @@ class Link implements Converter
     private function loadContent(int $id): Content
     {
         return $this->repository->sudo(
-            fn (): Content => $this->loadService->loadContent($id),
+            fn (): Content => $this->loadService->loadContent($id)
         );
     }
 
     private function loadLocation(int $id): Location
     {
         return $this->repository->sudo(
-            fn (): Location => $this->loadService->loadLocation($id),
+            fn (): Location => $this->loadService->loadLocation($id)
         );
     }
 
-    private function generateUrlAliasForContentOrLocation(Content|Location $object, string $fragment): string
+    private function generateUrlAliasForContentOrLocation($object, string $fragment): string
     {
         $urlAlias = $this->router->generate(
             RouteObjectInterface::OBJECT_BASED_ROUTE_NAME,
             [
-                RouteObjectInterface::ROUTE_OBJECT => $object,
-            ],
+                RouteObjectInterface::ROUTE_OBJECT => $object
+            ]
         );
 
         return $urlAlias . $fragment;

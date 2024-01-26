@@ -30,9 +30,15 @@ use Psr\Log\NullLogger;
  */
 class Site implements SiteInterface
 {
+    private BaseSettings $settings;
+    private APILanguageResolver $languageResolver;
     private ContentService $contentService;
     private LocationService $locationService;
     private SearchService $searchService;
+    private SearchService $filteringSearchService;
+    private RelationResolverRegistry $relationResolverRegistry;
+    private Repository $repository;
+    private LoggerInterface $logger;
 
     private ?DomainObjectMapper $domainObjectMapper = null;
     private ?APIFilterService $filterService = null;
@@ -40,29 +46,23 @@ class Site implements SiteInterface
     private ?APILoadService $loadService = null;
     private ?APIRelationService $relationService = null;
 
-    private BaseSettings $settings;
-    private APILanguageResolver $languageResolver;
-    private Repository $repository;
-    private SearchService $filteringSearchService;
-    private RelationResolverRegistry $relationResolverRegistry;
-    private LoggerInterface $logger;
-
     public function __construct(
         BaseSettings $settings,
         APILanguageResolver $languageResolver,
         Repository $repository,
         SearchService $filteringSearchService,
-        RelationResolverRegistry $relationResolverRegistry
+        RelationResolverRegistry $relationResolverRegistry,
+        ?LoggerInterface $logger = null
     ) {
-        $this->contentService = $repository->getContentService();
-        $this->locationService = $repository->getLocationService();
-        $this->searchService = $repository->getSearchService();
         $this->settings = $settings;
         $this->languageResolver = $languageResolver;
         $this->repository = $repository;
+        $this->contentService = $repository->getContentService();
+        $this->locationService = $repository->getLocationService();
+        $this->searchService = $repository->getSearchService();
         $this->filteringSearchService = $filteringSearchService;
         $this->relationResolverRegistry = $relationResolverRegistry;
-        $this->logger = new NullLogger();
+        $this->logger = $logger ?? new NullLogger();
     }
 
     public function getSettings(): BaseSettings
@@ -127,6 +127,8 @@ class Site implements SiteInterface
 
     /**
      * @internal for Site API internal use only
+     *
+     * @return \Netgen\IbexaSiteApi\Core\Site\DomainObjectMapper
      */
     public function getDomainObjectMapper(): DomainObjectMapper
     {

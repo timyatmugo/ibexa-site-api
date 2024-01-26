@@ -11,9 +11,8 @@ class RenderViewEvent extends Event
 {
     private View $view;
 
-    public function __construct(
-        View $view
-    ) {
+    public function __construct(View $view)
+    {
         $this->view = $view;
     }
 

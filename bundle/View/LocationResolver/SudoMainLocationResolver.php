@@ -17,10 +17,8 @@ class SudoMainLocationResolver extends LocationResolver
     private Repository $repository;
     private LoadService $loadService;
 
-    public function __construct(
-        Repository $repository,
-        LoadService $loadService
-    ) {
+    public function __construct(Repository $repository, LoadService $loadService)
+    {
         $this->repository = $repository;
         $this->loadService = $loadService;
     }
@@ -28,7 +26,7 @@ class SudoMainLocationResolver extends LocationResolver
     public function getLocation(Content $content): Location
     {
         if ($content->mainLocationId === null) {
-            throw new NotFoundException('Main Location of Content', $content->id);
+            throw new NotFoundException('main Location of Content', $content->id);
         }
 
         try {

@@ -32,18 +32,18 @@ final class Location extends APILocation
 {
     protected RepoLocation $innerLocation;
     private string $languageCode;
+
     private ?APIContentInfo $contentInfo = null;
     private ?APILocation $internalParent = null;
     private ?APIContent $internalContent = null;
+
     private VersionInfo $innerVersionInfo;
     private Site $site;
     private DomainObjectMapper $domainObjectMapper;
     private LoggerInterface $logger;
 
-    public function __construct(
-        array $properties,
-        LoggerInterface $logger
-    ) {
+    public function __construct(array $properties, LoggerInterface $logger)
+    {
         $this->site = $properties['site'];
         $this->domainObjectMapper = $properties['domainObjectMapper'];
         $this->innerVersionInfo = $properties['innerVersionInfo'];
@@ -68,6 +68,11 @@ final class Location extends APILocation
      * Magic getter for retrieving convenience properties.
      *
      * @param string $property The name of the property to retrieve
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\PropertyNotFoundException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
+     * @throws \Netgen\IbexaSiteApi\API\Exceptions\TranslationNotMatchedException
      */
     public function __get($property)
     {
@@ -120,6 +125,34 @@ final class Location extends APILocation
         }
 
         return parent::__isset($property);
+    }
+
+    /**
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     */
+    public function __debugInfo(): array
+    {
+        return [
+            'id' => $this->innerLocation->id,
+            'status' => $this->innerLocation->status,
+            'priority' => $this->innerLocation->priority,
+            'hidden' => $this->innerLocation->hidden,
+            'invisible' => $this->innerLocation->invisible,
+            'explicitlyHidden' => $this->innerLocation->explicitlyHidden,
+            'isVisible' => !$this->innerLocation->hidden && !$this->innerLocation->invisible,
+            'remoteId' => $this->innerLocation->remoteId,
+            'parentLocationId' => $this->innerLocation->parentLocationId,
+            'pathString' => $this->innerLocation->pathString,
+            'path' => $this->innerLocation->path,
+            'depth' => $this->innerLocation->depth,
+            'sortField' => $this->innerLocation->sortField,
+            'sortOrder' => $this->innerLocation->sortOrder,
+            'contentId' => $this->innerLocation->contentId,
+            'innerLocation' => '[An instance of Ibexa\Contracts\Core\Repository\Values\Content\Location]',
+            'contentInfo' => $this->getContentInfo(),
+            'parent' => '[An instance of Netgen\IbexaSiteApi\API\Values\Location]',
+            'content' => '[An instance of Netgen\IbexaSiteApi\API\Values\Content]',
+        ];
     }
 
     public function getChildren(int $limit = 25): array
@@ -186,6 +219,9 @@ final class Location extends APILocation
         return $this->getFilterPager($criteria, $maxPerPage, $currentPage);
     }
 
+    /**
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotImplementedException
+     */
     public function getSortClauses(): array
     {
         $sortClauses = [];
@@ -212,8 +248,8 @@ final class Location extends APILocation
             $this->logger->notice(
                 sprintf(
                     'Cannot use sort clauses from parent location: %s',
-                    $e->getMessage(),
-                ),
+                    $e->getMessage()
+                )
             );
 
             $sortClauses = [];
@@ -236,6 +272,11 @@ final class Location extends APILocation
         return $pager;
     }
 
+    /**
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
+     * @throws \Netgen\IbexaSiteApi\API\Exceptions\TranslationNotMatchedException
+     */
     private function getParent(): APILocation
     {
         if ($this->internalParent === null) {
@@ -259,6 +300,9 @@ final class Location extends APILocation
         return $this->internalContent;
     }
 
+    /**
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     */
     private function getContentInfo(): APIContentInfo
     {
         if ($this->contentInfo === null) {

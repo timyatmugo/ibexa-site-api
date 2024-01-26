@@ -96,23 +96,45 @@ final class Content extends APIContent
      * Magic getter for retrieving convenience properties.
      *
      * @param string $property The name of the property to retrieve
+     *
+     * @throws \Exception
      */
     public function __get($property)
     {
-        return match ($property) {
-            'fields' => $this->fields,
-            'mainLocation' => $this->getMainLocation(),
-            'innerContent' => $this->getInnerContent(),
-            'versionInfo',
-            'innerVersionInfo' => $this->innerVersionInfo,
-            'contentInfo' => $this->getContentInfo(),
-            'owner' => $this->getOwner(),
-            'innerOwnerUser' => $this->getInnerOwnerUser(),
-            'modifier' => $this->getModifier(),
-            'innerModifierUser' => $this->getInnerModifierUser(),
-            'isVisible' => $this->getContentInfo()->isVisible,
-            default => parent::__get($property),
-        };
+        switch ($property) {
+            case 'fields':
+                return $this->fields;
+
+            case 'mainLocation':
+                return $this->getMainLocation();
+
+            case 'innerContent':
+                return $this->getInnerContent();
+
+            case 'versionInfo':
+            case 'innerVersionInfo':
+                return $this->innerVersionInfo;
+
+            case 'contentInfo':
+                return $this->getContentInfo();
+
+            case 'owner':
+                return $this->getOwner();
+
+            case 'innerOwnerUser':
+                return $this->getInnerOwnerUser();
+
+            case 'modifier':
+                return $this->getModifier();
+
+            case 'innerModifierUser':
+                return $this->getInnerModifierUser();
+
+            case 'isVisible':
+                return $this->getContentInfo()->isVisible;
+        }
+
+        return parent::__get($property);
     }
 
     /**
@@ -122,51 +144,107 @@ final class Content extends APIContent
      */
     public function __isset($property): bool
     {
-        return match ($property) {
-            'contentInfo',
-            'fields',
-            'mainLocation',
-            'innerContent',
-            'versionInfo',
-            'owner',
-            'innerOwnerUser',
-            'modifier',
-            'innerModifierUser',
-            'isVisible' => true,
-            default => parent::__isset($property),
-        };
+        switch ($property) {
+            case 'contentInfo':
+            case 'fields':
+            case 'mainLocation':
+            case 'innerContent':
+            case 'versionInfo':
+            case 'owner':
+            case 'innerOwnerUser':
+            case 'modifier':
+            case 'innerModifierUser':
+            case 'isVisible':
+                return true;
+        }
+
+        return parent::__isset($property);
     }
 
+    /**
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     */
+    public function __debugInfo(): array
+    {
+        return [
+            'id' => $this->id,
+            'mainLocationId' => $this->mainLocationId,
+            'name' => $this->name,
+            'languageCode' => $this->languageCode,
+            'isVisible' => $this->getContentInfo()->isVisible,
+            'contentInfo' => $this->getContentInfo(),
+            'fields' => $this->fields,
+            'mainLocation' => '[An instance of Netgen\IbexaSiteApi\API\Values\Location]',
+            'innerContent' => '[An instance of Ibexa\Contracts\Core\Repository\Values\Content\Content]',
+            'innerVersionInfo' => '[An instance of Ibexa\Contracts\Core\Repository\Values\Content\VersionInfo]',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     */
     public function hasField(string $identifier): bool
     {
         return $this->fields->hasField($identifier);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     */
     public function getField(string $identifier): APIField
     {
         return $this->fields->getField($identifier);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     */
     public function hasFieldById($id): bool
     {
         return $this->fields->hasFieldById($id);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     */
     public function getFieldById($id): APIField
     {
         return $this->fields->getFieldById($id);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     */
     public function getFirstNonEmptyField(string $firstIdentifier, string ...$otherIdentifiers): APIField
     {
         return $this->fields->getFirstNonEmptyField($firstIdentifier, ...$otherIdentifiers);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     */
     public function getFieldValue(string $identifier): Value
     {
         return $this->getField($identifier)->value;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     */
     public function getFieldValueById($id): Value
     {
         return $this->getFieldById($id)->value;
@@ -217,7 +295,7 @@ final class Content extends APIContent
     public function getSudoFieldRelation(string $fieldDefinitionIdentifier): ?APIContent
     {
         return $this->repository->sudo(
-            fn () => $this->getFieldRelation($fieldDefinitionIdentifier),
+            fn () => $this->getFieldRelation($fieldDefinitionIdentifier)
         );
     }
 
@@ -234,7 +312,7 @@ final class Content extends APIContent
     public function getSudoFieldRelations(string $fieldDefinitionIdentifier, int $limit = 25): array
     {
         return $this->repository->sudo(
-            fn () => $this->getFieldRelations($fieldDefinitionIdentifier, $limit),
+            fn () => $this->getFieldRelations($fieldDefinitionIdentifier, $limit)
         );
     }
 
@@ -242,7 +320,7 @@ final class Content extends APIContent
         string $fieldDefinitionIdentifier,
         array $contentTypeIdentifiers = [],
         int $maxPerPage = 25,
-        int $currentPage = 1,
+        int $currentPage = 1
     ): Pagerfanta {
         $relations = $this->site->getRelationService()->loadFieldRelations(
             $this,
@@ -263,15 +341,15 @@ final class Content extends APIContent
         string $fieldDefinitionIdentifier,
         array $contentTypeIdentifiers = [],
         int $maxPerPage = 25,
-        int $currentPage = 1,
+        int $currentPage = 1
     ): Pagerfanta {
         return $this->repository->sudo(
             fn () => $this->filterFieldRelations(
                 $fieldDefinitionIdentifier,
                 $contentTypeIdentifiers,
                 $maxPerPage,
-                $currentPage,
-            ),
+                $currentPage
+            )
         );
     }
 
@@ -286,7 +364,7 @@ final class Content extends APIContent
     public function getSudoFieldRelationLocation(string $fieldDefinitionIdentifier): ?APILocation
     {
         return $this->repository->sudo(
-            fn () => $this->getFieldRelationLocation($fieldDefinitionIdentifier),
+            fn () => $this->getFieldRelationLocation($fieldDefinitionIdentifier)
         );
     }
 
@@ -303,7 +381,7 @@ final class Content extends APIContent
     public function getSudoFieldRelationLocations(string $fieldDefinitionIdentifier, int $limit = 25): array
     {
         return $this->repository->sudo(
-            fn () => $this->getFieldRelationLocations($fieldDefinitionIdentifier, $limit),
+            fn () => $this->getFieldRelationLocations($fieldDefinitionIdentifier, $limit)
         );
     }
 
@@ -311,7 +389,7 @@ final class Content extends APIContent
         string $fieldDefinitionIdentifier,
         array $contentTypeIdentifiers = [],
         int $maxPerPage = 25,
-        int $currentPage = 1,
+        int $currentPage = 1
     ): Pagerfanta {
         $relations = $this->site->getRelationService()->loadFieldRelationLocations(
             $this,
@@ -332,15 +410,15 @@ final class Content extends APIContent
         string $fieldDefinitionIdentifier,
         array $contentTypeIdentifiers = [],
         int $maxPerPage = 25,
-        int $currentPage = 1,
+        int $currentPage = 1
     ): Pagerfanta {
         return $this->repository->sudo(
             fn () => $this->filterFieldRelationLocations(
                 $fieldDefinitionIdentifier,
                 $contentTypeIdentifiers,
                 $maxPerPage,
-                $currentPage,
-            ),
+                $currentPage
+            )
         );
     }
 
@@ -372,6 +450,9 @@ final class Content extends APIContent
         return $this->innerContent;
     }
 
+    /**
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     */
     private function getContentInfo(): APIContentInfo
     {
         if ($this->contentInfo === null) {
@@ -384,6 +465,9 @@ final class Content extends APIContent
         return $this->contentInfo;
     }
 
+    /**
+     * @throws \Exception
+     */
     private function getOwner(): ?APIContent
     {
         if ($this->isOwnerInitialized) {
@@ -424,6 +508,9 @@ final class Content extends APIContent
         return $this->innerOwnerUser;
     }
 
+    /**
+     * @throws \Exception
+     */
     private function getModifier(): ?APIContent
     {
         if ($this->isModifierInitialized) {

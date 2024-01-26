@@ -28,6 +28,12 @@ final class Subtree extends Location
         return 'SiteAPI:Location/Subtree';
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException
+     * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
+     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->remove(['parent_location_id', 'subtree']);
@@ -71,6 +77,8 @@ final class Subtree extends Location
      * {@inheritdoc}
      *
      * @return \Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion[]
+     *
+     * @throws \InvalidArgumentException
      */
     protected function getFilterCriteria(array $parameters): array
     {
@@ -92,7 +100,7 @@ final class Subtree extends Location
      *
      * @return int|int[] array
      */
-    private function getRelativeDepthValue(int $startDepth, $value): mixed
+    private function getRelativeDepthValue(int $startDepth, $value)
     {
         if (is_array($value)) {
             return array_map(

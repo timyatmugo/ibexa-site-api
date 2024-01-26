@@ -15,9 +15,9 @@ use Netgen\IbexaSiteApi\API\Settings as BaseSettings;
 final class Settings extends BaseSettings
 {
     private ConfigResolverInterface $configResolver;
-    public function __construct(
-        ConfigResolverInterface $configResolver
-    ) {
+
+    public function __construct(ConfigResolverInterface $configResolver)
+    {
         $this->configResolver = $configResolver;
     }
 
@@ -28,22 +28,34 @@ final class Settings extends BaseSettings
      */
     public function __get(string $property)
     {
-        return match ($property) {
-            'prioritizedLanguages' => $this->configResolver->getParameter('languages'),
-            'useAlwaysAvailable' => $this->configResolver->getParameter('ng_site_api.use_always_available_fallback'),
-            'rootLocationId' => $this->configResolver->getParameter('content.tree_root.location_id'),
-            'showHiddenItems' => $this->configResolver->getParameter('ng_site_api.show_hidden_items'),
-            'failOnMissingField' => $this->configResolver->getParameter('ng_site_api.fail_on_missing_field'),
-            default => throw new PropertyNotFoundException($property, self::class),
-        };
+        switch ($property) {
+            case 'prioritizedLanguages':
+                return $this->configResolver->getParameter('languages');
+
+            case 'useAlwaysAvailable':
+                return $this->configResolver->getParameter('ng_site_api.use_always_available_fallback');
+
+            case 'rootLocationId':
+                return $this->configResolver->getParameter('content.tree_root.location_id');
+
+            case 'showHiddenItems':
+                return $this->configResolver->getParameter('ng_site_api.show_hidden_items');
+
+            case 'failOnMissingField':
+                return $this->configResolver->getParameter('ng_site_api.fail_on_missing_field');
+        }
+
+        throw new PropertyNotFoundException($property, __CLASS__);
     }
 
     /**
+     * @param mixed $value
+     *
      * @throws \Ibexa\Contracts\Core\Repository\Exceptions\PropertyReadOnlyException
      */
-    public function __set(string $property, mixed $value): void
+    public function __set(string $property, $value): void
     {
-        throw new PropertyReadOnlyException($property, self::class);
+        throw new PropertyReadOnlyException($property, __CLASS__);
     }
 
     /**
@@ -51,13 +63,15 @@ final class Settings extends BaseSettings
      */
     public function __isset(string $property): bool
     {
-        return match ($property) {
-            'prioritizedLanguages',
-            'useAlwaysAvailable',
-            'rootLocationId',
-            'showHiddenItems',
-            'failOnMissingField' => true,
-            default => throw new PropertyNotFoundException($property, self::class),
-        };
+        switch ($property) {
+            case 'prioritizedLanguages':
+            case 'useAlwaysAvailable':
+            case 'rootLocationId':
+            case 'showHiddenItems':
+            case 'failOnMissingField':
+                return true;
+        }
+
+        throw new PropertyNotFoundException($property, __CLASS__);
     }
 }

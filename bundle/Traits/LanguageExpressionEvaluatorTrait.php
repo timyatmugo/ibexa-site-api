@@ -9,8 +9,8 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use function is_array;
 use function is_string;
 use function mb_strlen;
+use function mb_strpos;
 use function mb_substr;
-use function str_starts_with;
 
 /**
  * Common implementation for processing language expressions.
@@ -23,12 +23,14 @@ trait LanguageExpressionEvaluatorTrait
      * Return given $value processed with ExpressionLanguage if needed.
      *
      * Parameter $view is used to provide values for evaluation.
+     *
+     * @param mixed $value
      */
     protected function evaluate(
-        mixed $value,
+        $value,
         ExpressionLanguage $expressionLanguage,
-        array $values,
-    ): mixed {
+        array $values
+    ) {
         if (is_array($value)) {
             return $this->evaluateParameters($value, $expressionLanguage, $values);
         }
@@ -51,7 +53,7 @@ trait LanguageExpressionEvaluatorTrait
     private function evaluateParameters(
         array $parameters,
         ExpressionLanguage $expressionLanguage,
-        array $values,
+        array $values
     ): array {
         $processedParameters = [];
 
@@ -66,9 +68,9 @@ trait LanguageExpressionEvaluatorTrait
         return $processedParameters;
     }
 
-    private function isExpression(mixed $value): bool
+    private function isExpression($value): bool
     {
-        return is_string($value) && str_starts_with($value, self::$expressionMarker);
+        return is_string($value) && mb_strpos($value, self::$expressionMarker) === 0;
     }
 
     private function extractExpression(string $value): string

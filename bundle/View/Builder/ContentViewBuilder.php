@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use function in_array;
 use function is_string;
-use function str_contains;
+use function mb_strpos;
 
 /**
  * Builds ContentView objects.
@@ -54,11 +54,14 @@ class ContentViewBuilder implements ViewBuilder
 
     public function matches($argument): bool
     {
-        return is_string($argument) && str_contains($argument, 'ng_content:');
+        return is_string($argument) && mb_strpos($argument, 'ng_content:') !== false;
     }
 
     /**
-     * @throws \Ibexa\Core\Base\Exceptions\InvalidArgumentException When Content can't be resolved for the given parameters
+     * @throws \Exception
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
      */
     public function buildView(array $parameters): ContentView
     {
@@ -154,10 +157,7 @@ class ContentViewBuilder implements ViewBuilder
             throw new UnauthorizedException(
                 'content',
                 'read|view_embed',
-                [
-                    'contentId' => $contentId,
-                    'locationId' => $location !== null ? $location->id : 'n/a',
-                ],
+                ['contentId' => $contentId, 'locationId' => $location !== null ? $location->id : 'n/a'],
             );
         }
 
@@ -166,13 +166,7 @@ class ContentViewBuilder implements ViewBuilder
             $versionInfo->status !== VersionInfo::STATUS_PUBLISHED
             && !$this->repository->getPermissionResolver()->canUser('content', 'versionread', $versionInfo)
         ) {
-            throw new UnauthorizedException(
-                'content',
-                'versionread',
-                [
-                    'contentId' => $contentId,
-                ],
-            );
+            throw new UnauthorizedException('content', 'versionread', ['contentId' => $contentId]);
         }
 
         return $content;
@@ -222,6 +216,10 @@ class ContentViewBuilder implements ViewBuilder
             return true;
         }
 
-        return in_array($parameters['viewType'], ['embed', 'embed-inline'], true);
+        if (in_array($parameters['viewType'], ['embed', 'embed-inline'], true)) {
+            return true;
+        }
+
+        return false;
     }
 }

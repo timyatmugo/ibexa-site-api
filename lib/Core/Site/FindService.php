@@ -40,6 +40,12 @@ class FindService implements FindServiceInterface
         $this->contentService = $contentService;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
+     */
     public function findContent(Query $query): SearchResult
     {
         $searchResult = $this->searchService->findContentInfo(
@@ -65,6 +71,12 @@ class FindService implements FindServiceInterface
         return $searchResult;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
+     */
     public function findLocations(LocationQuery $query): SearchResult
     {
         $searchResult = $this->searchService->findLocations(

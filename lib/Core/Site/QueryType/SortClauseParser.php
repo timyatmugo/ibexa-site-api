@@ -17,7 +17,6 @@ use Netgen\IbexaSearchExtra\API\Values\Content\Query\SortClause\ContentName;
 use function array_key_exists;
 use function explode;
 use function mb_strtolower;
-use function sprintf;
 
 /**
  * Sort clause parser parses string representation of the SortClause
@@ -50,6 +49,8 @@ final class SortClauseParser
 {
     /**
      * Return new sort clause instance by the given $definition string.
+     *
+     * @throws \InvalidArgumentException
      */
     public function parse(string $definition): SortClause
     {
@@ -79,14 +80,18 @@ final class SortClauseParser
         }
 
         throw new InvalidArgumentException(
-            sprintf("Could not handle sort type '%s'", $type),
+            "Could not handle sort type '{$type}'",
         );
     }
 
     /**
      * Build a new Field sort clause from the given arguments.
+     *
+     * @param mixed $direction
+     *
+     * @throws \InvalidArgumentException
      */
-    private function buildFieldSortClause(array $values, string $direction): Field
+    private function buildFieldSortClause(array $values, $direction): Field
     {
         if (!array_key_exists(1, $values)) {
             throw new InvalidArgumentException(
@@ -107,6 +112,8 @@ final class SortClauseParser
      * Resolve direction constant value from the given array of $values.
      *
      * @param string[] $values
+     *
+     * @throws \InvalidArgumentException
      */
     private function getDirection(array $values): string
     {
@@ -125,7 +132,7 @@ final class SortClauseParser
         }
 
         throw new InvalidArgumentException(
-            sprintf("Could not handle sort direction '%s'", $direction),
+            "Could not handle sort direction '{$direction}'",
         );
     }
 }

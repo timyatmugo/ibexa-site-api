@@ -11,8 +11,11 @@ use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
 use Ibexa\Core\MVC\Symfony\SiteAccess;
 use Netgen\Bundle\IbexaSiteApiBundle\Exception\SiteAccessResolver\SiteAccessMatchException;
 use Netgen\Bundle\IbexaSiteApiBundle\SiteAccess\Resolver;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 use function array_fill_keys;
+use function array_key_first;
 use function array_keys;
 use function array_map;
 use function in_array;
@@ -64,6 +67,9 @@ class NativeResolver extends Resolver
         $this->siteaccessGroupsBySiteaccess = $siteaccessGroupsBySiteaccess;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function resolveByLocation(Location $location): string
     {
         $currentSiteaccess = $this->currentSiteaccess->name;
@@ -214,6 +220,9 @@ class NativeResolver extends Resolver
         return false;
     }
 
+    /**
+     * @throws \Exception
+     */
     private function matchByPrioritizedLanguage(Location $location, string $language, int $position = 0): ?string
     {
         $recurse = false;
@@ -244,11 +253,17 @@ class NativeResolver extends Resolver
         return $this->matchByPrioritizedLanguage($location, $language, $nextPosition);
     }
 
+    /**
+     * @throws \Exception
+     */
     private function matchBySiteaccess(Location $location, string $siteaccess): ?string
     {
         return $this->canShow($siteaccess, $location) ? $siteaccess : null;
     }
 
+    /**
+     * @throws \Exception
+     */
     private function canShow(string $siteaccess, Location $location): bool
     {
         if (isset($this->cache['can_show'][$siteaccess][$location->id])) {
@@ -279,6 +294,8 @@ class NativeResolver extends Resolver
 
     /**
      * @return string[]
+     *
+     * @throws \Exception
      */
     private function getLanguageSet(Location $location): array
     {
@@ -435,7 +452,7 @@ class NativeResolver extends Resolver
         return false;
     }
 
-    private function getParameter(string $name): mixed
+    private function getParameter(string $name)
     {
         $currentSiteaccess = $this->currentSiteaccess->name;
 

@@ -25,6 +25,8 @@ abstract class Resolver
      * Return related Content IDs for the given $field.
      *
      * @return int[]|string[]
+     *
+     * @throws \LogicException If the field can't be handled by the resolver
      */
     public function getRelationIds(Field $field): array
     {
@@ -32,7 +34,7 @@ abstract class Resolver
             $identifier = $this->getSupportedFieldTypeIdentifier();
 
             throw new LogicException(
-                sprintf("This resolver can only handle fields of '%s' type", $identifier),
+                sprintf("This resolver can only handle fields of '%s' type", $identifier)
             );
         }
 

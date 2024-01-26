@@ -21,6 +21,8 @@ final class RelationResolverRegistrationPass implements CompilerPassInterface
      * Service ID of the resolver registry.
      *
      * @see \Netgen\IbexaSiteApi\Core\Site\Plugins\FieldType\RelationResolver\Registry
+     *
+     * @var string
      */
     private string $resolverRegistryId = 'netgen.ibexa_site_api.plugins.field_type.relation_resolver.registry';
 
@@ -28,6 +30,8 @@ final class RelationResolverRegistrationPass implements CompilerPassInterface
      * Service tag used for field type relation resolvers.
      *
      * @see \Netgen\IbexaSiteApi\Core\Site\Plugins\FieldType\RelationResolver\Resolver
+     *
+     * @var string
      */
     private string $resolverTag = 'netgen.ibexa_site_api.plugins.field_type.relation_resolver';
 
@@ -42,12 +46,15 @@ final class RelationResolverRegistrationPass implements CompilerPassInterface
         $resolvers = $container->findTaggedServiceIds($this->resolverTag);
 
         foreach ($resolvers as $id => $attributes) {
+            /* @var array $attributes */
             $this->registerResolver($resolverRegistryDefinition, $id, $attributes);
         }
     }
 
     /**
      * Add method call to register resolver with given $id with resolver registry.
+     *
+     * @throws \LogicException
      */
     private function registerResolver(Definition $resolverRegistryDefinition, string $id, array $attributes): void
     {
@@ -56,8 +63,8 @@ final class RelationResolverRegistrationPass implements CompilerPassInterface
                 throw new LogicException(
                     sprintf(
                         "'%s' service tag needs an 'identifier' attribute to identify the field type",
-                        $this->resolverTag,
-                    ),
+                        $this->resolverTag
+                    )
                 );
             }
 
@@ -65,8 +72,8 @@ final class RelationResolverRegistrationPass implements CompilerPassInterface
                 'register',
                 [
                     $attribute['identifier'],
-                    new Reference($id),
-                ],
+                    new Reference($id)
+                ]
             );
         }
     }

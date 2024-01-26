@@ -21,6 +21,8 @@ final class CriterionDefinitionResolver
 {
     /**
      * Set of available operator names.
+     *
+     * @var array
      */
     private static array $operatorMap = [
         'eq' => Operator::EQ,
@@ -37,9 +39,13 @@ final class CriterionDefinitionResolver
     /**
      * Resolve Criterion $parameters.
      *
+     * @param mixed $parameters
+     *
      * @return \Netgen\IbexaSiteApi\Core\Site\QueryType\CriterionDefinition[]
+     *
+     * @throws \InvalidArgumentException
      */
-    public function resolve(string $name, mixed $parameters): array
+    public function resolve(string $name, $parameters): array
     {
         return $this->resolveForTarget($name, null, $parameters);
     }
@@ -48,6 +54,8 @@ final class CriterionDefinitionResolver
      * Resolve Field Criterion $parameters.
      *
      * @return \Netgen\IbexaSiteApi\Core\Site\QueryType\CriterionDefinition[]
+     *
+     * @throws \InvalidArgumentException
      */
     public function resolveTargets(string $name, array $parameters): array
     {
@@ -63,9 +71,13 @@ final class CriterionDefinitionResolver
     /**
      * Return CriterionDefinition instances for the given Field $target and its $parameters.
      *
+     * @param mixed $parameters
+     *
      * @return \Netgen\IbexaSiteApi\Core\Site\QueryType\CriterionDefinition[]
+     *
+     * @throws \InvalidArgumentException
      */
-    private function resolveForTarget(string $name, ?string $target, mixed $parameters): array
+    private function resolveForTarget(string $name, ?string $target, $parameters): array
     {
         if ($this->isOperatorMap($parameters)) {
             return $this->resolveOperatorMap($name, $target, $parameters);
@@ -92,12 +104,11 @@ final class CriterionDefinitionResolver
         return $definitions;
     }
 
-    private function buildDefinitionForOperator(
-        string $name,
-        ?string $target,
-        string $operator,
-        mixed $value,
-    ): CriterionDefinition {
+    /**
+     * @param mixed $value
+     */
+    private function buildDefinitionForOperator(string $name, ?string $target, string $operator, $value): CriterionDefinition
+    {
         if ($operator === 'not') {
             return $this->buildDefinition(
                 'not',
@@ -112,12 +123,14 @@ final class CriterionDefinitionResolver
 
     /**
      * Return CriterionDefinition instance from the given arguments.
+     *
+     * @param mixed $value
      */
     private function buildDefinition(
         string $name,
         ?string $target,
         ?string $operator,
-        mixed $value,
+        $value
     ): CriterionDefinition {
         return new CriterionDefinition([
             'name' => $name,
@@ -129,8 +142,12 @@ final class CriterionDefinitionResolver
 
     /**
      * Decide if the given $parameters is an operator-value map (otherwise it's a value collection).
+     *
+     * @param mixed $parameters
+     *
+     * @throws \InvalidArgumentException
      */
-    private function isOperatorMap(mixed $parameters): bool
+    private function isOperatorMap($parameters): bool
     {
         if (!is_array($parameters)) {
             return false;
@@ -163,8 +180,10 @@ final class CriterionDefinitionResolver
 
     /**
      * Resolve actual operator value from the given arguments.
+     *
+     * @param mixed $value
      */
-    private function resolveOperator(?string $symbol, mixed $value)
+    private function resolveOperator(?string $symbol, $value)
     {
         if ($symbol === null) {
             return $this->getOperatorByValueType($value);
@@ -175,8 +194,12 @@ final class CriterionDefinitionResolver
 
     /**
      * Return operator value by the given $value.
+     *
+     * @param mixed $value
+     *
+     * @throws \RuntimeException
      */
-    private function getOperatorByValueType(mixed $value): string
+    private function getOperatorByValueType($value): string
     {
         if (is_array($value)) {
             return Operator::IN;

@@ -14,7 +14,7 @@ use Netgen\IbexaSiteApi\API\Values\Content;
 use Netgen\IbexaSiteApi\API\Values\Location;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-
+use Throwable;
 use function sprintf;
 
 /**
@@ -28,23 +28,29 @@ final class ContentRenderer
     private ContentViewBuilder $viewBuilder;
     private ViewRenderer $viewRenderer;
     private LoggerInterface $logger;
+
     public function __construct(
         ContentViewBuilder $viewBuilder,
-        ViewRenderer $viewRenderer
+        ViewRenderer $viewRenderer,
+        ?LoggerInterface $logger
     ) {
         $this->viewBuilder = $viewBuilder;
         $this->viewRenderer = $viewRenderer;
-        $this->logger = new NullLogger();
+        $this->logger = $logger ?? new NullLogger();
     }
 
     /**
      * Renders the HTML for a given $content.
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
      */
     public function renderContent(
         ValueObject $value,
         string $viewType,
         array $parameters = [],
-        bool $layout = false,
+        bool $layout = false
     ): string {
         /** @var APIContent|Content $content */
         $content = $this->getContent($value);
@@ -83,7 +89,7 @@ final class ContentRenderer
             $this->logger->error(
                 sprintf(
                     'Could not build the embedded view: %s',
-                    $exception->getMessage(),
+                    $exception->getMessage()
                 ),
             );
 
@@ -95,12 +101,16 @@ final class ContentRenderer
 
     /**
      * Renders the HTML for a given $content.
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
      */
     public function renderIbexaContent(
         ValueObject $value,
         string $viewType,
         array $parameters = [],
-        bool $layout = false,
+        bool $layout = false
     ): string {
         $content = $this->getIbexaContent($value);
         $location = $this->getIbexaLocation($value);
@@ -123,13 +133,17 @@ final class ContentRenderer
 
     /**
      * Renders the HTML for a given $content.
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
      */
     public function renderIbexaEmbeddedContent(string $viewType, array $parameters = []): string
     {
         $baseParameters = [
             'viewType' => $viewType,
             'layout' => false,
-            '_controller' => 'ibexa_content:embedAction',
+            '_controller' => 'ibexa_content:embedAction'
         ];
 
         try {
@@ -138,8 +152,8 @@ final class ContentRenderer
             $this->logger->error(
                 sprintf(
                     'Could not build the embedded view: %s',
-                    $exception->getMessage(),
-                ),
+                    $exception->getMessage()
+                )
             );
 
             return '';

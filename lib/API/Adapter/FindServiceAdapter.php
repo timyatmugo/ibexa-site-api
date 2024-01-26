@@ -30,10 +30,9 @@ final class FindServiceAdapter implements SearchService
 {
     private FindService $findService;
     private Handler $searchHandler;
-    public function __construct(
-        FindService $findService,
-        Handler $searchHandler
-    ) {
+
+    public function __construct(FindService $findService, Handler $searchHandler)
+    {
         $this->findService = $findService;
         $this->searchHandler = $searchHandler;
     }

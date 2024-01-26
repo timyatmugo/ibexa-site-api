@@ -22,6 +22,12 @@ final class ReverseFields extends Content
         return 'SiteAPI:Content/Relations/ReverseFields';
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException
+     * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
+     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired([
@@ -33,7 +39,15 @@ final class ReverseFields extends Content
         $resolver->setAllowedTypes('relation_field', ['string', 'string[]']);
     }
 
-    protected function getFilterCriteria(array $parameters): mixed
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \LogicException
+     * @throws \OutOfBoundsException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    protected function getFilterCriteria(array $parameters)
     {
         $fields = (array) $parameters['relation_field'];
 

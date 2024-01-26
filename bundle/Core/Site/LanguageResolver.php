@@ -39,7 +39,6 @@ final class LanguageResolver extends BaseLanguageResolver
         $this->logger = new NullLogger();
     }
 
-    /** @noinspection PhpUnused */
     public function setSiteaccess(?SiteAccess $currentSiteAccess = null): void
     {
         $this->currentSiteaccess = $currentSiteAccess;
@@ -75,8 +74,8 @@ final class LanguageResolver extends BaseLanguageResolver
                 sprintf(
                     'Could not resolve siteaccess for Content #%s, falling back to the current siteaccess: %s',
                     $versionInfo->contentInfo->id,
-                    $exception->getMessage(),
-                ),
+                    $exception->getMessage()
+                )
             );
 
             $siteaccess = $this->currentSiteaccess->name;
@@ -118,6 +117,9 @@ final class LanguageResolver extends BaseLanguageResolver
         );
     }
 
+    /**
+     * @throws \Netgen\IbexaSiteApi\Core\Site\Exceptions\TranslationNotMatchedException
+     */
     public function resolveByLocation(Location $location, VersionInfo $versionInfo): string
     {
         try {
@@ -127,8 +129,8 @@ final class LanguageResolver extends BaseLanguageResolver
                 sprintf(
                     'Could not resolve siteaccess for Location #%s, falling back to the current siteaccess: %s',
                     $location->id,
-                    $exception->getMessage(),
-                ),
+                    $exception->getMessage()
+                )
             );
 
             $siteaccess = $this->currentSiteaccess->name;
@@ -171,9 +173,6 @@ final class LanguageResolver extends BaseLanguageResolver
         );
     }
 
-    /**
-     * @return string[]
-     */
     private function getPrioritizedLanguages(string $siteaccess): array
     {
         return $this->configResolver->getParameter('languages', null, $siteaccess);

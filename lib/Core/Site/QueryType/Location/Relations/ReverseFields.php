@@ -24,6 +24,12 @@ final class ReverseFields extends Location
         return 'SiteAPI:Location/Relations/ReverseFields';
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException
+     * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
+     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired([
@@ -40,7 +46,15 @@ final class ReverseFields extends Location
         ]);
     }
 
-    protected function getFilterCriteria(array $parameters): mixed
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \LogicException
+     * @throws \OutOfBoundsException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    protected function getFilterCriteria(array $parameters)
     {
         $fields = (array) $parameters['relation_field'];
 

@@ -13,14 +13,17 @@ class EmbeddedContentViewRuntime
 {
     private ContentRenderer $contentRenderer;
 
-    public function __construct(
-        ContentRenderer $contentRenderer
-    ) {
+    public function __construct(ContentRenderer $contentRenderer)
+    {
         $this->contentRenderer = $contentRenderer;
     }
 
     /**
      * Renders the HTML for a given $content.
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
      */
     public function renderEmbeddedContentView(string $viewType, array $parameters = []): string
     {

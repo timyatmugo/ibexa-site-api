@@ -33,6 +33,7 @@ use function sprintf;
  */
 abstract class Base implements QueryType
 {
+    private Settings $settings;
     private ?OptionsResolver $optionsResolver = null;
     private ?CriterionDefinitionResolver $criterionDefinitionResolver = null;
     private ?CriteriaBuilder $criteriaBuilder = null;
@@ -41,10 +42,8 @@ abstract class Base implements QueryType
     /** @var \Closure[] */
     private ?array $registeredCriterionBuilders = null;
 
-    private Settings $settings;
-    public function __construct(
-        Settings $settings
-    ) {
+    public function __construct(Settings $settings)
+    {
         $this->settings = $settings;
     }
 
@@ -271,27 +270,31 @@ abstract class Base implements QueryType
     /**
      * @return \Netgen\IbexaSiteApi\Core\Site\QueryType\CriterionDefinition[]
      */
-    private function resolveCriterionDefinitions(string $name, mixed $parameters): array
+    private function resolveCriterionDefinitions(string $name, $parameters): array
     {
         $criterionDefinitionResolver = $this->getCriterionDefinitionResolver();
 
-        return match ($name) {
-            'content_type',
-            'depth',
-            'main',
-            'parent_location_id',
-            'priority',
-            'publication_date',
-            'creation_date',
-            'modification_date',
-            'section',
-            'subtree',
-            'visible' => $criterionDefinitionResolver->resolve($name, $parameters),
-            'field',
-            'state',
-            'is_field_empty' => $criterionDefinitionResolver->resolveTargets($name, $parameters),
-            default => [],
-        };
+        switch ($name) {
+            case 'content_type':
+            case 'depth':
+            case 'main':
+            case 'parent_location_id':
+            case 'priority':
+            case 'publication_date':
+            case 'creation_date':
+            case 'modification_date':
+            case 'section':
+            case 'subtree':
+            case 'visible':
+                return $criterionDefinitionResolver->resolve($name, $parameters);
+
+            case 'field':
+            case 'state':
+            case 'is_field_empty':
+                return $criterionDefinitionResolver->resolveTargets($name, $parameters);
+        }
+
+        return [];
     }
 
     /**

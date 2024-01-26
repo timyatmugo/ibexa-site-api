@@ -15,9 +15,9 @@ use function in_array;
 final class LanguageResolver extends BaseLanguageResolver
 {
     private BaseSettings $settings;
-    public function __construct(
-        BaseSettings $settings
-    ) {
+
+    public function __construct(BaseSettings $settings)
+    {
         $this->settings = $settings;
     }
 

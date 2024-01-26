@@ -33,12 +33,12 @@ final class SudoFilterAdapter extends BaseAdapter
     {
         if ($query instanceof LocationQuery) {
             return $this->repository->sudo(
-                fn () => $this->filterService->filterLocations($query),
+                fn () => $this->filterService->filterLocations($query)
             );
         }
 
         return $this->repository->sudo(
-            fn () => $this->filterService->filterContent($query),
+            fn () => $this->filterService->filterContent($query)
         );
     }
 }

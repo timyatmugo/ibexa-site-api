@@ -28,11 +28,11 @@ use function sprintf;
  */
 final class Loading extends Provider
 {
-    private ?array $configuration = null;
     private LoadService $loadService;
     private ?TagsService $tagsService;
     private ParameterProcessor $parameterProcessor;
     private ConfigResolverInterface $configResolver;
+    private ?array $configuration = null;
 
     public function __construct(
         LoadService $loadService,
@@ -57,7 +57,7 @@ final class Loading extends Provider
     {
         if (!$this->hasContent($name)) {
             throw new OutOfBoundsException(
-                sprintf('Named Content "%s" is not configured', $name),
+                sprintf('Named Content "%s" is not configured', $name)
             );
         }
 
@@ -72,7 +72,7 @@ final class Loading extends Provider
         }
 
         throw new InvalidArgumentException(
-            sprintf('Named Content "%s" ID is not string or integer', $name),
+            sprintf('Named Content "%s" ID is not string or integer', $name)
         );
     }
 
@@ -87,7 +87,7 @@ final class Loading extends Provider
     {
         if (!$this->hasLocation($name)) {
             throw new OutOfBoundsException(
-                sprintf('Named Location "%s" is not configured', $name),
+                sprintf('Named Location "%s" is not configured', $name)
             );
         }
 
@@ -102,7 +102,7 @@ final class Loading extends Provider
         }
 
         throw new InvalidArgumentException(
-            sprintf('Named Location "%s" ID is not string or integer', $name),
+            sprintf('Named Location "%s" ID is not string or integer', $name)
         );
     }
 
@@ -121,7 +121,7 @@ final class Loading extends Provider
 
         if (!$this->hasTag($name)) {
             throw new OutOfBoundsException(
-                sprintf('Named Tag "%s" is not configured', $name),
+                sprintf('Named Tag "%s" is not configured', $name)
             );
         }
 
@@ -136,25 +136,34 @@ final class Loading extends Provider
         }
 
         throw new InvalidArgumentException(
-            sprintf('Named Tag "%s" ID is not string or integer', $name),
+            sprintf('Named Tag "%s" ID is not string or integer', $name)
         );
     }
 
-    private function getContentId(string $name): mixed
+    /**
+     * @return string|int
+     */
+    private function getContentId(string $name)
     {
         $this->setConfiguration();
 
         return $this->parameterProcessor->process($this->configuration['content'][$name] ?? null);
     }
 
-    private function getLocationId(string $name): mixed
+    /**
+     * @return string|int
+     */
+    private function getLocationId(string $name)
     {
         $this->setConfiguration();
 
         return $this->parameterProcessor->process($this->configuration['locations'][$name] ?? null);
     }
 
-    private function getTagId(string $name): mixed
+    /**
+     * @return string|int
+     */
+    private function getTagId(string $name)
     {
         $this->setConfiguration();
 

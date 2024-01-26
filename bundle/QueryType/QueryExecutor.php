@@ -44,6 +44,8 @@ final class QueryExecutor
 
     /**
      * Execute the Query with the given $name and return the result.
+     *
+     * @throws \Pagerfanta\Exception\Exception
      */
     public function execute(QueryDefinition $queryDefinition): Pagerfanta
     {
@@ -74,6 +76,8 @@ final class QueryExecutor
 
     /**
      * Execute the Query with the given $name and return the result.
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
      */
     public function executeRaw(QueryDefinition $queryDefinition): SearchResult
     {
@@ -95,12 +99,12 @@ final class QueryExecutor
 
         if ($query instanceof LocationQuery) {
             return $this->repository->sudo(
-                fn () => $this->getLocationResult($query, $queryDefinition),
+                fn () => $this->getLocationResult($query, $queryDefinition)
             );
         }
 
         return $this->repository->sudo(
-            fn () => $this->getContentResult($query, $queryDefinition),
+            fn () => $this->getContentResult($query, $queryDefinition)
         );
     }
 
@@ -135,6 +139,11 @@ final class QueryExecutor
         return $this->findService->findLocations($query);
     }
 
+    /**
+     * Return search result by the given parameters.
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     */
     private function getContentResult(Query $query, QueryDefinition $queryDefinition): SearchResult
     {
         if ($queryDefinition->useFilter) {

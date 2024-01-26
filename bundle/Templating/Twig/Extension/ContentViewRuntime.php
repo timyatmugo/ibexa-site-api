@@ -14,9 +14,8 @@ class ContentViewRuntime
 {
     private ContentRenderer $contentRenderer;
 
-    public function __construct(
-        ContentRenderer $contentRenderer
-    ) {
+    public function __construct(ContentRenderer $contentRenderer)
+    {
         $this->contentRenderer = $contentRenderer;
     }
 
@@ -27,7 +26,7 @@ class ContentViewRuntime
         ValueObject $value,
         string $viewType,
         array $parameters = [],
-        bool $layout = false,
+        bool $layout = false
     ): string {
         return $this->contentRenderer->renderContent($value, $viewType, $parameters, $layout);
     }

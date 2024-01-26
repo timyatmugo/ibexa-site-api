@@ -11,6 +11,8 @@ use Netgen\Bundle\IbexaSiteApiBundle\View\ContentView;
 use Pagerfanta\Pagerfanta;
 use Twig\Error\RuntimeError;
 
+use function array_key_exists;
+use function is_array;
 use function sprintf;
 
 /**
@@ -21,52 +23,62 @@ class QueryRuntime
 {
     private QueryExecutor $queryExecutor;
 
-    public function __construct(
-        QueryExecutor $queryExecutor
-    ) {
+    public function __construct(QueryExecutor $queryExecutor)
+    {
         $this->queryExecutor = $queryExecutor;
     }
 
-    public function executeQuery(mixed $context, string $name): Pagerfanta
+    /**
+     * @param mixed $context
+     *
+     * @throws \Pagerfanta\Exception\Exception
+     * @throws \Twig\Error\RuntimeError
+     */
+    public function executeQuery($context, string $name): Pagerfanta
     {
         return $this->queryExecutor->execute(
-            $this->getQueryDefinitionCollection($context)->get($name),
+            $this->getQueryDefinitionCollection($context)->get($name)
         );
     }
 
     public function sudoExecuteQuery(mixed $context, string $name): Pagerfanta
     {
         return $this->queryExecutor->sudoExecute(
-            $this->getQueryDefinitionCollection($context)->get($name),
+            $this->getQueryDefinitionCollection($context)->get($name)
         );
     }
 
     public function executeRawQuery(mixed $context, string $name): SearchResult
     {
         return $this->queryExecutor->executeRaw(
-            $this->getQueryDefinitionCollection($context)->get($name),
+            $this->getQueryDefinitionCollection($context)->get($name)
         );
     }
 
     public function sudoExecuteRawQuery(mixed $context, string $name): SearchResult
     {
         return $this->queryExecutor->sudoExecuteRaw(
-            $this->getQueryDefinitionCollection($context)->get($name),
+            $this->getQueryDefinitionCollection($context)->get($name)
         );
     }
 
     /**
      * Returns the QueryDefinitionCollection variable from the given $context.
      *
+     * @param mixed $context
+     *
      * @throws \Twig\Error\RuntimeError
      */
-    private function getQueryDefinitionCollection(mixed $context): QueryDefinitionCollection
+    private function getQueryDefinitionCollection($context): QueryDefinitionCollection
     {
-        return $context[ContentView::QUERY_DEFINITION_COLLECTION_NAME] ?? throw new RuntimeError(
-            sprintf(
-                "Could not find QueryDefinitionCollection variable '%s'",
-                ContentView::QUERY_DEFINITION_COLLECTION_NAME,
-            ),
+        $variableName = ContentView::QUERY_DEFINITION_COLLECTION_NAME;
+
+        if (is_array($context) && array_key_exists($variableName, $context)) {
+            return $context[$variableName];
+        }
+
+        throw new RuntimeError(
+            "Could not find QueryDefinitionCollection variable '{$variableName}'",
         );
     }
 }

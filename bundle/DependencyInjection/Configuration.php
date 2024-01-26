@@ -11,9 +11,8 @@ class Configuration implements ConfigurationInterface
 {
     protected string $rootNodeName;
 
-    public function __construct(
-        string $rootNodeName
-    ) {
+    public function __construct(string $rootNodeName)
+    {
         $this->rootNodeName = $rootNodeName;
     }
 

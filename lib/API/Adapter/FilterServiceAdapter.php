@@ -31,10 +31,8 @@ final class FilterServiceAdapter implements SearchService
     private FilterService $filterService;
     private Handler $searchHandler;
 
-    public function __construct(
-        FilterService $filterService,
-        Handler $searchHandler
-    ) {
+    public function __construct(FilterService $filterService, Handler $searchHandler)
+    {
         $this->filterService = $filterService;
         $this->searchHandler = $searchHandler;
     }

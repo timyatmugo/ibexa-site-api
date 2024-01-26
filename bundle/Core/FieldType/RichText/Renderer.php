@@ -16,6 +16,7 @@ use function sprintf;
 class Renderer extends CoreRenderer
 {
     private string $ngEmbedConfigurationNamespace;
+
     public function __construct(
         Repository $repository,
         ConfigResolverInterface $configResolver,
@@ -41,6 +42,7 @@ class Renderer extends CoreRenderer
             $customTagsConfiguration,
             $customStylesConfiguration,
         );
+
         $this->ngEmbedConfigurationNamespace = $ngEmbedConfigurationNamespace;
     }
 
@@ -97,7 +99,7 @@ class Renderer extends CoreRenderer
     {
         /** @var bool $isSiteApiPrimaryContentView */
         $isSiteApiPrimaryContentView = $this->configResolver->getParameter(
-            'ng_site_api.site_api_is_primary_content_view',
+            'ng_site_api.site_api_is_primary_content_view'
         );
 
         if ($isSiteApiPrimaryContentView) {

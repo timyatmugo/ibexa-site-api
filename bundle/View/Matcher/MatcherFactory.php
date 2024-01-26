@@ -12,17 +12,18 @@ use Ibexa\Core\MVC\Symfony\Matcher\ViewMatcherInterface;
 use Ibexa\Core\MVC\Symfony\View\View;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
+use function mb_strpos;
 use function mb_substr;
-use function str_starts_with;
 
 class MatcherFactory extends ClassNameMatcherFactory
 {
     use ContainerAwareTrait;
+
     private ?ViewMatcherRegistry $viewMatcherRegistry;
     private ConfigResolverInterface $configResolver;
     private string $parameterName;
-    private ?string $namespace = null;
-    private ?string $scope = null;
+    private ?string $namespace;
+    private ?string $scope;
 
     public function __construct(
         Repository $repository,
@@ -33,13 +34,13 @@ class MatcherFactory extends ClassNameMatcherFactory
         ?string $namespace = null,
         ?string $scope = null
     ) {
-        parent::__construct($repository, $relativeNamespace);
-
         $this->viewMatcherRegistry = $viewMatcherRegistry;
         $this->configResolver = $configResolver;
         $this->parameterName = $parameterName;
         $this->namespace = $namespace;
         $this->scope = $scope;
+
+        parent::__construct($repository, $relativeNamespace);
     }
 
     public function match(View $view): ?array
@@ -52,10 +53,14 @@ class MatcherFactory extends ClassNameMatcherFactory
 
     /**
      * @param string $matcherIdentifier
+     *
+     * @return \Ibexa\Core\MVC\Symfony\Matcher\ViewMatcherInterface
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
      */
     protected function getMatcher($matcherIdentifier): ViewMatcherInterface
     {
-        if ($this->viewMatcherRegistry !== null && str_starts_with($matcherIdentifier, '@')) {
+        if ($this->viewMatcherRegistry !== null && mb_strpos($matcherIdentifier, '@') === 0) {
             return $this->viewMatcherRegistry->getMatcher(mb_substr($matcherIdentifier, 1));
         }
 

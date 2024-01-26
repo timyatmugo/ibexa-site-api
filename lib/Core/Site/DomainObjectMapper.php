@@ -30,9 +30,9 @@ use function sprintf;
  */
 final class DomainObjectMapper
 {
+    private SiteInterface $site;
     private FieldTypeService $fieldTypeService;
     private ContentTypeService $contentTypeService;
-    private SiteInterface $site;
     private Repository $repository;
     private bool $failOnMissingField;
     private LoggerInterface $logger;
@@ -43,10 +43,10 @@ final class DomainObjectMapper
         bool $failOnMissingField,
         LoggerInterface $logger
     ) {
-        $this->contentTypeService = $repository->getContentTypeService();
-        $this->fieldTypeService = $repository->getFieldTypeService();
         $this->site = $site;
         $this->repository = $repository;
+        $this->contentTypeService = $repository->getContentTypeService();
+        $this->fieldTypeService = $repository->getFieldTypeService();
         $this->failOnMissingField = $failOnMissingField;
         $this->logger = $logger;
     }
@@ -76,6 +76,8 @@ final class DomainObjectMapper
 
     /**
      * Maps Repository ContentInfo to the Site ContentInfo.
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
      */
     public function mapContentInfo(VersionInfo $versionInfo, string $languageCode): ContentInfo
     {
@@ -115,6 +117,8 @@ final class DomainObjectMapper
 
     /**
      * Maps Repository Field to the Site Field.
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
      */
     public function mapField(RepoField $apiField, SiteContent $content): APIField
     {
@@ -124,8 +128,8 @@ final class DomainObjectMapper
             throw new RuntimeException(
                 sprintf(
                     "Could not find FieldDefinition for '%s' field",
-                    $apiField->fieldDefIdentifier,
-                ),
+                    $apiField->fieldDefIdentifier
+                )
             );
         }
 

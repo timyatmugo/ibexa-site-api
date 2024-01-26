@@ -25,13 +25,16 @@ use function sprintf;
  */
 final class Siblings extends Location
 {
-    private LoggerInterface $logger;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
 
-    public function __construct(
-        Settings $settings
-    ) {
+    public function __construct(Settings $settings, ?LoggerInterface $logger = null)
+    {
         parent::__construct($settings);
-        $this->logger = new NullLogger();
+
+        $this->logger = $logger ?? new NullLogger();
     }
 
     public static function getName(): string
@@ -39,6 +42,12 @@ final class Siblings extends Location
         return 'SiteAPI:Location/Siblings';
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException
+     * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
+     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->remove(['depth', 'parent_location_id', 'subtree']);
@@ -57,8 +66,8 @@ final class Siblings extends Location
                     $this->logger->notice(
                         sprintf(
                             'Cannot use sort clauses from parent location: %s',
-                            $exception->getMessage(),
-                        ),
+                            $exception->getMessage()
+                        )
                     );
 
                     return [];
@@ -71,6 +80,8 @@ final class Siblings extends Location
      * {@inheritdoc}
      *
      * @return \Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion[]
+     *
+     * @throws \InvalidArgumentException
      */
     protected function getFilterCriteria(array $parameters): array
     {

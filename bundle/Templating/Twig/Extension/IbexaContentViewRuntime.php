@@ -13,20 +13,24 @@ use Netgen\Bundle\IbexaSiteApiBundle\View\ContentRenderer;
 final class IbexaContentViewRuntime
 {
     private ContentRenderer $contentRenderer;
-    public function __construct(
-        ContentRenderer $contentRenderer
-    ) {
+
+    public function __construct(ContentRenderer $contentRenderer)
+    {
         $this->contentRenderer = $contentRenderer;
     }
 
     /**
      * Renders the HTML for a given $content.
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
      */
     public function renderContentView(
         ValueObject $value,
         string $viewType,
         array $parameters = [],
-        bool $layout = false,
+        bool $layout = false
     ): string {
         return $this->contentRenderer->renderIbexaContent($value, $viewType, $parameters, $layout);
     }

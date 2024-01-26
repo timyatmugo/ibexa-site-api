@@ -18,17 +18,18 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class InvalidRedirectConfigurationListener implements EventSubscriberInterface
 {
+    private LoggerInterface $logger;
     private UrlGeneratorInterface $urlGenerator;
     private ConfigResolverInterface $configResolver;
-    private LoggerInterface $logger;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        ConfigResolverInterface $configResolver
+        ConfigResolverInterface $configResolver,
+        ?LoggerInterface $logger = null
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->configResolver = $configResolver;
-        $this->logger = new NullLogger();
+        $this->logger = $logger ?? new NullLogger();
     }
 
     public static function getSubscribedEvents(): array
@@ -47,15 +48,14 @@ final class InvalidRedirectConfigurationListener implements EventSubscriberInter
         $this->logger->critical($exception->getMessage());
 
         $rootLocationId = $this->configResolver->getParameter('content.tree_root.location_id');
-
         $event->setResponse(
             new RedirectResponse(
                 $this->urlGenerator->generate(
                     UrlAliasRouter::URL_ALIAS_ROUTE_NAME,
-                    ['locationId' => $rootLocationId],
+                    ['locationId' => $rootLocationId]
                 ),
-                Response::HTTP_FOUND,
-            ),
+                Response::HTTP_FOUND
+            )
         );
     }
 }

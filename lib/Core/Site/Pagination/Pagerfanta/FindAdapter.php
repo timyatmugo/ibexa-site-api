@@ -19,14 +19,16 @@ final class FindAdapter extends BaseAdapter
 {
     private FindService $findService;
 
-    public function __construct(
-        Query $query,
-        FindService $findService
-    ) {
+    public function __construct(Query $query, FindService $findService)
+    {
         parent::__construct($query);
+
         $this->findService = $findService;
     }
 
+    /**
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     */
     protected function executeQuery(Query $query): SearchResult
     {
         if ($query instanceof LocationQuery) {

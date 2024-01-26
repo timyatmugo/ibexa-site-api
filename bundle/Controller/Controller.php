@@ -1,7 +1,5 @@
 <?php
 
-/** @noinspection PhpUnused */
-
 declare(strict_types=1);
 
 namespace Netgen\Bundle\IbexaSiteApiBundle\Controller;
@@ -46,7 +44,7 @@ abstract class Controller extends AbstractController
             RelationService::class,
             Site::class,
             Settings::class,
-            ViewRenderer::class,
+            ViewRenderer::class
         ];
 
         return $subscribedServices + parent::getSubscribedServices();
