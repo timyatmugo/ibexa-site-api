@@ -36,7 +36,7 @@ use Psr\Log\LoggerInterface;
 final class Content extends APIContent
 {
     protected int $id;
-    protected ?string $name;
+    protected string $name;
     protected string $languageCode;
     protected ?int $mainLocationId;
 
@@ -271,7 +271,7 @@ final class Content extends APIContent
                     'filter' => new LogicalAnd($criteria),
                     'sortClauses' => [
                         new Path(),
-                    ],
+                    ]
                 ]),
                 $this->site->getFilterService(),
             ),
@@ -288,7 +288,7 @@ final class Content extends APIContent
     {
         return $this->site->getRelationService()->loadFieldRelation(
             $this,
-            $fieldDefinitionIdentifier,
+            $fieldDefinitionIdentifier
         );
     }
 
@@ -305,7 +305,7 @@ final class Content extends APIContent
             $this,
             $fieldDefinitionIdentifier,
             [],
-            $limit,
+            $limit
         );
     }
 
@@ -325,7 +325,7 @@ final class Content extends APIContent
         $relations = $this->site->getRelationService()->loadFieldRelations(
             $this,
             $fieldDefinitionIdentifier,
-            $contentTypeIdentifiers,
+            $contentTypeIdentifiers
         );
 
         $pager = new Pagerfanta(new ArrayAdapter($relations));
@@ -357,7 +357,7 @@ final class Content extends APIContent
     {
         return $this->site->getRelationService()->loadFieldRelationLocation(
             $this,
-            $fieldDefinitionIdentifier,
+            $fieldDefinitionIdentifier
         );
     }
 
@@ -374,7 +374,7 @@ final class Content extends APIContent
             $this,
             $fieldDefinitionIdentifier,
             [],
-            $limit,
+            $limit
         );
     }
 
@@ -394,7 +394,7 @@ final class Content extends APIContent
         $relations = $this->site->getRelationService()->loadFieldRelationLocations(
             $this,
             $fieldDefinitionIdentifier,
-            $contentTypeIdentifiers,
+            $contentTypeIdentifiers
         );
 
         $pager = new Pagerfanta(new ArrayAdapter($relations));
@@ -426,22 +426,25 @@ final class Content extends APIContent
     {
         if ($this->internalMainLocation === null && $this->mainLocationId !== null) {
             $this->internalMainLocation = $this->site->getLoadService()->loadLocation(
-                $this->mainLocationId,
+                $this->mainLocationId
             );
         }
 
         return $this->internalMainLocation;
     }
 
+    /**
+     * @throws \Exception
+     */
     private function getInnerContent(): RepoContent
     {
         if ($this->innerContent === null) {
             $this->innerContent = $this->repository->sudo(
-                function (): RepoContent {
+                function (Repository $repository): RepoContent {
                     return $this->contentService->loadContent(
                         $this->id,
                         [$this->languageCode],
-                        $this->innerVersionInfo->versionNo,
+                        $this->innerVersionInfo->versionNo
                     );
                 },
             );
@@ -458,7 +461,7 @@ final class Content extends APIContent
         if ($this->contentInfo === null) {
             $this->contentInfo = $this->domainObjectMapper->mapContentInfo(
                 $this->innerVersionInfo,
-                $this->languageCode,
+                $this->languageCode
             );
         }
 

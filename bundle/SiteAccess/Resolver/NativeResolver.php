@@ -33,22 +33,33 @@ use const SORT_NUMERIC;
  */
 class NativeResolver extends Resolver
 {
+    private Handler $persistenceHandler;
+    private int $recursionLimit;
+    private LoggerInterface $logger;
+
+    private ConfigResolverInterface $configResolver;
     private SiteAccess $currentSiteaccess;
     private array $siteaccesses;
     private array $siteaccessGroupsBySiteaccess;
 
     private array $cache = [];
-    private Handler $persistenceHandler;
-    private int $recursionLimit;
-    private ConfigResolverInterface $configResolver;
 
     public function __construct(
         Handler $persistenceHandler,
         int $recursionLimit,
-        ConfigResolverInterface $configResolver
+        ConfigResolverInterface $configResolver,
+        ?LoggerInterface $logger = null
     ) {
         $this->persistenceHandler = $persistenceHandler;
         $this->recursionLimit = $recursionLimit;
+        $this->logger = $logger ?? new NullLogger();
+    }
+
+    /**
+     * @param ConfigResolverInterface $configResolver
+     */
+    public function setConfigResolver(ConfigResolverInterface $configResolver): void
+    {
         $this->configResolver = $configResolver;
     }
 
@@ -99,7 +110,7 @@ class NativeResolver extends Resolver
     }
 
     /**
-     * @throws \Netgen\Bundle\IbexaSiteApiBundle\Exception\SiteAccessResolver\SiteAccessMatchException
+     * @throws \Exception
      */
     private function internalResolve(Location $location): string
     {

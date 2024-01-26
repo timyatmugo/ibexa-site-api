@@ -72,8 +72,8 @@ final class RelationResolverRegistrationPass implements CompilerPassInterface
                 'register',
                 [
                     $attribute['identifier'],
-                    new Reference($id)
-                ]
+                    new Reference($id),
+                ],
             );
         }
     }

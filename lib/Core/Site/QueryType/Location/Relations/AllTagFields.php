@@ -29,6 +29,12 @@ final class AllTagFields extends Location
         return 'SiteAPI:Location/Relations/AllTagFields';
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException
+     * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
+     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('content');
@@ -44,7 +50,15 @@ final class AllTagFields extends Location
         ]);
     }
 
-    protected function getFilterCriteria(array $parameters): mixed
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \LogicException
+     * @throws \OutOfBoundsException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    protected function getFilterCriteria(array $parameters)
     {
         /** @var \Netgen\IbexaSiteApi\API\Values\Content $content */
         $content = $parameters['content'];
@@ -66,6 +80,10 @@ final class AllTagFields extends Location
     }
 
     /**
+     * Extract all Tag IDs from the given $content.
+     *
+     * @param \Netgen\IbexaSiteApi\API\Values\Content $content
+     *
      * @return int[]
      */
     private function extractTagIds(SiteContent $content): array

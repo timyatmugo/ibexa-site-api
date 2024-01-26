@@ -132,6 +132,11 @@ class ContentViewBuilder implements ViewBuilder
         return $view;
     }
 
+    /**
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
+     * @throws \Netgen\IbexaSiteApi\API\Exceptions\TranslationNotMatchedException
+     */
     private function loadContent(int $contentId): Content
     {
         return $this->site->getLoadService()->loadContent($contentId);
@@ -142,6 +147,7 @@ class ContentViewBuilder implements ViewBuilder
      * Will load the content with sudo(), and check if the user can view_embed this content, for the given location
      * if provided.
      *
+     * @throws \Exception
      * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
      */
     private function loadEmbeddedContent(int $contentId, ?Location $location = null): Content
@@ -176,6 +182,8 @@ class ContentViewBuilder implements ViewBuilder
      * Loads a Location with visibility check.
      *
      * @todo Do we need to handle permissions here ?
+     *
+     * @throws \Exception
      */
     private function loadLocation(int $locationId, bool $checkVisibility = true): Location
     {
@@ -194,6 +202,9 @@ class ContentViewBuilder implements ViewBuilder
 
     /**
      * Checks if a user can read a content, or view it as an embed.
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\BadStateException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
      */
     private function canReadOrViewEmbed(ContentInfo $contentInfo, ?Location $location = null): bool
     {

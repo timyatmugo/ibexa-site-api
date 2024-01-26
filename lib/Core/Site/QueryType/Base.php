@@ -47,6 +47,12 @@ abstract class Base implements QueryType
         $this->settings = $settings;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
     final public function getQuery(array $parameters = []): Query
     {
         $parameters = $this->getOptionsResolver()->resolve($parameters);
@@ -97,7 +103,7 @@ abstract class Base implements QueryType
      *
      * @return Criterion|Criterion[]|null
      */
-    protected function getFilterCriteria(array $parameters): mixed
+    protected function getFilterCriteria(array $parameters)
     {
         return null;
     }
@@ -162,7 +168,7 @@ abstract class Base implements QueryType
      * Register builder closure for $name Criterion.
      *
      * Closure will be called with an instance of CriterionDefinition and an array of QueryType
-     * parameters, and it must return a Criterion instance.
+     * parameters and it must return a Criterion instance.
      *
      * @see \Netgen\IbexaSiteApi\Core\Site\QueryType\CriterionDefinition
      */
@@ -251,6 +257,9 @@ abstract class Base implements QueryType
      * Build criteria for the base supported options.
      *
      * @return \Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion[]
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     private function buildBaseCriteria(array $parameters): array
     {
@@ -268,6 +277,8 @@ abstract class Base implements QueryType
     }
 
     /**
+     * @param mixed $parameters
+     *
      * @return \Netgen\IbexaSiteApi\Core\Site\QueryType\CriterionDefinition[]
      */
     private function resolveCriterionDefinitions(string $name, $parameters): array
@@ -340,6 +351,10 @@ abstract class Base implements QueryType
         return $criteria;
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
     private function resolveFilterCriteria(array $parameters): ?Criterion
     {
         $baseCriteria = $this->buildBaseCriteria($parameters);
@@ -371,6 +386,8 @@ abstract class Base implements QueryType
      * Return an array of SortClause instances from the given $parameters.
      *
      * @return \Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause[]
+     *
+     * @throws \InvalidArgumentException
      */
     private function getSortClauses(array $parameters): array
     {
@@ -391,11 +408,14 @@ abstract class Base implements QueryType
         return $sortClauses;
     }
 
+    /**
+     * @return \Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause|string
+     */
     private function parseSortString(string $string)
     {
         try {
             return $this->getSortClauseParser()->parse($string);
-        } catch (InvalidArgumentException) {
+        } catch (InvalidArgumentException $e) {
             // do nothing
         }
 

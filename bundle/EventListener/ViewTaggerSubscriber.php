@@ -13,9 +13,8 @@ final class ViewTaggerSubscriber implements EventSubscriberInterface
 {
     private ResponseTagger $responseTagger;
 
-    public function __construct(
-        ResponseTagger $responseTagger
-    ) {
+    public function __construct(ResponseTagger $responseTagger)
+    {
         $this->responseTagger = $responseTagger;
     }
 

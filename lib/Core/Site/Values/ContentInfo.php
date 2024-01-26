@@ -40,7 +40,11 @@ final class ContentInfo extends APIContentInfo
      *
      * Magic getter for retrieving convenience properties.
      *
-     * @param string $property Name of the property to retrieve
+     * @param string $property The name of the property to retrieve
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
+     * @throws \Netgen\IbexaSiteApi\API\Exceptions\TranslationNotMatchedException
      */
     public function __get($property)
     {

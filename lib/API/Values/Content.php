@@ -18,7 +18,7 @@ use Pagerfanta\Pagerfanta;
  *
  * @property-read int $id
  * @property-read ?int $mainLocationId
- * @property-read ?string $name
+ * @property-read string $name
  * @property-read string $languageCode
  * @property-read bool $isVisible
  * @property-read \Netgen\IbexaSiteApi\API\Values\ContentInfo $contentInfo
@@ -46,11 +46,15 @@ abstract class Content extends ValueObject
 
     /**
      * Returns if content has the field with the given field $id.
+     *
+     * @param int $id
      */
     abstract public function hasFieldById(int $id): bool;
 
     /**
      * Return Field object for the given field $id.
+     *
+     * @param int $id
      */
     abstract public function getFieldById(int $id): Field;
 
@@ -69,6 +73,8 @@ abstract class Content extends ValueObject
 
     /**
      * Returns a field value for the given field $id.
+     *
+     * @param int $id
      */
     abstract public function getFieldValueById(int $id): Value;
 
@@ -138,6 +144,9 @@ abstract class Content extends ValueObject
     /**
      * Return all related Locations from $fieldDefinitionIdentifier.
      *
+     * @param string $fieldDefinitionIdentifier
+     * @param int $limit
+     *
      * @return \Netgen\IbexaSiteApi\API\Values\Location[]
      */
     abstract public function getFieldRelationLocations(string $fieldDefinitionIdentifier, int $limit = 25): array;
@@ -153,7 +162,10 @@ abstract class Content extends ValueObject
      * Return related Locations from $fieldDefinitionIdentifier field,
      * optionally limited by a list of $contentTypeIdentifiers.
      *
+     * @param string $fieldDefinitionIdentifier
      * @param string[] $contentTypeIdentifiers
+     * @param int $maxPerPage
+     * @param int $currentPage
      *
      * @return \Pagerfanta\Pagerfanta Pagerfanta instance iterating over Site API Locations
      */

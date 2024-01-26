@@ -117,9 +117,6 @@ final class LanguageResolver extends BaseLanguageResolver
         );
     }
 
-    /**
-     * @throws \Netgen\IbexaSiteApi\Core\Site\Exceptions\TranslationNotMatchedException
-     */
     public function resolveByLocation(Location $location, VersionInfo $versionInfo): string
     {
         try {

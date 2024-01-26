@@ -27,6 +27,12 @@ final class AllTagFields extends Content
         return 'SiteAPI:Content/Relations/AllTagFields';
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException
+     * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
+     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('content');
@@ -39,7 +45,15 @@ final class AllTagFields extends Content
         ]);
     }
 
-    protected function getFilterCriteria(array $parameters): mixed
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \LogicException
+     * @throws \OutOfBoundsException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    protected function getFilterCriteria(array $parameters)
     {
         /** @var \Netgen\IbexaSiteApi\API\Values\Content $content */
         $content = $parameters['content'];

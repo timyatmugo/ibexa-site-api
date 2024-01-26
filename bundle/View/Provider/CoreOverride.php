@@ -11,14 +11,21 @@ use Ibexa\Core\MVC\Symfony\View\View;
 final class CoreOverride extends CoreConfigured
 {
     private ContentViewFallbackResolver $contentViewFallbackResolver;
+
     public function __construct(
         MatcherFactoryInterface $matcherFactory,
         ContentViewFallbackResolver $contentViewFallbackResolver
     ) {
         parent::__construct($matcherFactory);
+
         $this->contentViewFallbackResolver = $contentViewFallbackResolver;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     */
     public function getView(View $view): ?View
     {
         // Service is dispatched by the configured view class, so this should be safe

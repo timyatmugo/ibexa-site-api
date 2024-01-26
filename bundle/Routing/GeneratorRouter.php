@@ -36,7 +36,6 @@ use function is_object;
 use function mb_strlen;
 use function mb_substr;
 use function sprintf;
-use function str_starts_with;
 
 /**
  * @final
@@ -346,8 +345,12 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
 
     private function checkContentLocation(?APILocation $location): APILocation
     {
-        return $location ?? throw new LogicException(
-            'Cannot generate an UrlAlias route for Content without the main Location'
-        );
+        if ($location === null) {
+            throw new LogicException(
+                'Cannot generate an UrlAlias route for Content without the main Location',
+            );
+        }
+
+        return $location;
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Netgen\Bundle\IbexaSiteApiBundle\View;
 
-use Exception;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content as APIContent;
 use Ibexa\Contracts\Core\Repository\Values\Content\Location as APILocation;
 use Ibexa\Contracts\Core\Repository\Values\ValueObject;
@@ -15,7 +14,6 @@ use Netgen\IbexaSiteApi\API\Values\Location;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Throwable;
-use function sprintf;
 
 /**
  * ContentRenderer renders a configured content view for the given Content or Location object,
@@ -89,7 +87,7 @@ final class ContentRenderer
             $this->logger->error(
                 sprintf(
                     'Could not build the embedded view: %s',
-                    $exception->getMessage()
+                    $exception->getMessage(),
                 ),
             );
 
@@ -143,7 +141,7 @@ final class ContentRenderer
         $baseParameters = [
             'viewType' => $viewType,
             'layout' => false,
-            '_controller' => 'ibexa_content:embedAction'
+            '_controller' => 'ibexa_content:embedAction',
         ];
 
         try {

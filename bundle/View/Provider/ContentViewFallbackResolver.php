@@ -30,6 +30,9 @@ final class ContentViewFallbackResolver
         $this->toSiteApiViewFallbackTemplate = $toSiteApiViewFallbackTemplate;
     }
 
+    /**
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     */
     public function getIbexaPlatformFallbackDto(SiteContentView $view): ?ContentView
     {
         if (!$this->isIbexaPlatformFallbackEnabled()) {
@@ -43,6 +46,9 @@ final class ContentViewFallbackResolver
         return new ContentView($this->toIbexaPlatformViewFallbackTemplate);
     }
 
+    /**
+     * @throws \Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException
+     */
     public function getSiteApiFallbackDto(ContentView $view): ?ContentView
     {
         if (!$this->isSiteApiFallbackEnabled()) {

@@ -9,7 +9,6 @@ use Ibexa\Core\QueryType\QueryTypeRegistry;
 use InvalidArgumentException;
 use Netgen\Bundle\IbexaSiteApiBundle\View\ContentView;
 use Netgen\IbexaSiteApi\Core\Site\QueryType\QueryType as SiteQueryType;
-use OutOfBoundsException;
 
 use function array_key_exists;
 use function array_replace;
