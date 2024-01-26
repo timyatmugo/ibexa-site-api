@@ -264,7 +264,7 @@ final class ParameterProcessorTest extends TestCase
     /**
      * @dataProvider providerForTestProcess
      */
-    public function testProcess(mixed $parameter, mixed $expectedProcessedParameter): void
+    public function testProcess($parameter, $expectedProcessedParameter): void
     {
         $parameterProcessor = $this->getParameterProcessorUnderTest();
         $viewMock = $this->getViewMock();
@@ -308,7 +308,7 @@ final class ParameterProcessorTest extends TestCase
         return new ParameterProcessor($expressionLanguage, $requestStack, $configResolver, $namedObjectProvider);
     }
 
-    protected function getConfigResolverMock(): mixed
+    protected function getConfigResolverMock()
     {
         $configResolverMock = $this->getMockBuilder(ConfigResolverInterface::class)->getMock();
 

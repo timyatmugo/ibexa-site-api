@@ -55,7 +55,7 @@ trait ContentFieldsMockTrait
      */
     abstract public function internalGetRepoFields(): array;
 
-    protected function getSiteMock(): mixed
+    protected function getSiteMock()
     {
         if ($this->siteMock !== null) {
             return $this->siteMock;

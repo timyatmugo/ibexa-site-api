@@ -314,7 +314,7 @@ class GeneratorRouter implements ChainedRouterInterface, RequestMatcherInterface
         );
     }
 
-    private function resolveLocationFromRouteObject(mixed $object): APILocation
+    private function resolveLocationFromRouteObject($object): APILocation
     {
         if ($object instanceof Location) {
             return $object->innerLocation;

@@ -85,7 +85,7 @@ abstract class BaseTest extends APIBaseTest
         ];
     }
 
-    protected function overrideSettings(string $name, mixed $value): void
+    protected function overrideSettings(string $name, $value): void
     {
         $settings = $this->getSite()->getSettings();
 

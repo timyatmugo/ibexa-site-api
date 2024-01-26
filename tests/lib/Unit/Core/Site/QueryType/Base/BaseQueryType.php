@@ -31,7 +31,7 @@ class BaseQueryType extends Base
         // do nothing
     }
 
-    protected function getFilterCriteria(array $parameters): mixed
+    protected function getFilterCriteria(array $parameters)
     {
         return null;
     }

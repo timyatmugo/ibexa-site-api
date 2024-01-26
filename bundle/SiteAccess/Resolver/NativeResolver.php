@@ -51,6 +51,7 @@ class NativeResolver extends Resolver
         ?LoggerInterface $logger = null
     ) {
         $this->persistenceHandler = $persistenceHandler;
+        $this->configResolver = $configResolver;
         $this->recursionLimit = $recursionLimit;
         $this->logger = $logger ?? new NullLogger();
     }

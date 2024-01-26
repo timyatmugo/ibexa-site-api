@@ -71,7 +71,7 @@ final class PrepareFixturesTest extends APIBaseTest
 
     protected function createContent(
         ContentType $contentType,
-        mixed $parentLocationId,
+        $parentLocationId,
         string $contentRemoteId,
         string $locationRemoteId,
         string $mainLanguageCode,

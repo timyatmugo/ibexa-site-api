@@ -198,7 +198,7 @@ final class CachingProviderTest extends TestCase
         return new Caching($mockerProvider);
     }
 
-    protected function getProviderMock(): mixed
+    protected function getProviderMock()
     {
         return $this->getMockBuilder(Provider::class)->getMockForAbstractClass();
     }

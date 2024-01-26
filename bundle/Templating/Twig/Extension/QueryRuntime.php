@@ -41,21 +41,21 @@ class QueryRuntime
         );
     }
 
-    public function sudoExecuteQuery(mixed $context, string $name): Pagerfanta
+    public function sudoExecuteQuery($context, string $name): Pagerfanta
     {
         return $this->queryExecutor->sudoExecute(
             $this->getQueryDefinitionCollection($context)->get($name),
         );
     }
 
-    public function executeRawQuery(mixed $context, string $name): SearchResult
+    public function executeRawQuery($context, string $name): SearchResult
     {
         return $this->queryExecutor->executeRaw(
             $this->getQueryDefinitionCollection($context)->get($name),
         );
     }
 
-    public function sudoExecuteRawQuery(mixed $context, string $name): SearchResult
+    public function sudoExecuteRawQuery($context, string $name): SearchResult
     {
         return $this->queryExecutor->sudoExecuteRaw(
             $this->getQueryDefinitionCollection($context)->get($name),

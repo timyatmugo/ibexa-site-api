@@ -311,7 +311,7 @@ final class FieldsTest extends TestCase
         );
     }
 
-    protected function getLoggerMock(): mixed
+    protected function getLoggerMock()
     {
         if ($this->loggerMock !== null) {
             return $this->loggerMock;

@@ -101,7 +101,7 @@ final class ParameterProcessorTest extends TestCase
     /**
      * @dataProvider providerForTestProcess
      */
-    public function testProcess(mixed $parameter, mixed $expectedProcessedParameter): void
+    public function testProcess($parameter, $expectedProcessedParameter): void
     {
         $parameterProcessor = $this->getParameterProcessorUnderTest();
 

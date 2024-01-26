@@ -188,7 +188,7 @@ final class ContentTest extends TestCase
         );
     }
 
-    protected function getSiteMock(): mixed
+    protected function getSiteMock()
     {
         if ($this->siteMock !== null) {
             return $this->siteMock;
