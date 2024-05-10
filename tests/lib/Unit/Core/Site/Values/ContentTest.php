@@ -34,15 +34,15 @@ use Psr\Log\NullLogger;
  */
 final class ContentTest extends TestCase
 {
-    protected null|MockObject|Site $siteMock = null;
+    protected $siteMock = null;
     protected ?DomainObjectMapper $domainObjectMapper = null;
-    protected null|ContentService|MockObject $contentServiceMock = null;
-    protected null|ContentTypeService|MockObject $contentTypeServiceMock = null;
-    protected null|FieldTypeService|MockObject $fieldTypeServiceMock = null;
-    protected null|LoadService|MockObject $loadServiceMock = null;
-    protected null|MockObject|UserService $userServiceMock = null;
-    protected null|CoreRepository|MockObject $repositoryMock = null;
-    protected null|MockObject|UrlGenerator $urlGeneratorMock = null;
+    protected $contentServiceMock = null;
+    protected $contentTypeServiceMock = null;
+    protected $fieldTypeServiceMock = null;
+    protected $loadServiceMock = null;
+    protected $userServiceMock = null;
+    protected $repositoryMock = null;
+    protected $urlGeneratorMock = null;
 
     protected function setUp(): void
     {
@@ -316,7 +316,7 @@ final class ContentTest extends TestCase
         return $this->repositoryMock;
     }
 
-    protected function getUrlGeneratorMock(): MockObject|UrlGenerator
+    protected function getUrlGeneratorMock()
     {
         if ($this->urlGeneratorMock !== null) {
             return $this->urlGeneratorMock;

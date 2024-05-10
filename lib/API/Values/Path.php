@@ -18,9 +18,9 @@ use Netgen\IbexaSiteApi\API\Routing\UrlGenerator;
 final class Path
 {
     private UrlGenerator $urlGenerator;
-    private Content|Location $object;
+    private $object;
 
-    public function __construct(UrlGenerator $urlGenerator, Content|Location $object)
+    public function __construct(UrlGenerator $urlGenerator, $object)
     {
         $this->urlGenerator = $urlGenerator;
         $this->object = $object;

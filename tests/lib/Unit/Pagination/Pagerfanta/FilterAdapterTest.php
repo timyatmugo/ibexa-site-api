@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class FilterAdapterTest extends TestCase
 {
-    protected FilterService|MockObject $filterService;
+    protected $filterService;
 
     protected function setUp(): void
     {

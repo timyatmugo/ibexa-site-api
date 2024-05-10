@@ -121,12 +121,12 @@ final class DomainObjectMapper
         );
     }
 
-    public function mapPath(Content|Location $object): Path
+    public function mapPath($object): Path
     {
         return new Path($this->urlGenerator, $object);
     }
 
-    public function mapUrl(Content|Location $object): Url
+    public function mapUrl($object): Url
     {
         return new Url($this->urlGenerator, $object);
     }

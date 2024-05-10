@@ -26,26 +26,26 @@ use Psr\Log\NullLogger;
  */
 trait ContentFieldsMockTrait
 {
-    protected null|MockObject|Site $siteMock = null;
+    protected $siteMock = null;
 
     /** @var \Netgen\IbexaSiteApi\Core\Site\DomainObjectMapper[] */
     protected array $domainObjectMapper = [];
 
     /** @var \Netgen\IbexaSiteApi\Core\Site\DomainObjectMapper[] */
     protected array $domainObjectMapperForContentWithoutFields = [];
-    protected null|CoreRepository|MockObject $repositoryMock = null;
-    protected null|MockObject|UrlGenerator $urlGeneratorMock = null;
-    protected null|CoreRepository|MockObject $repositoryMockForContentWithoutFields = null;
+    protected $repositoryMock = null;
+    protected $urlGeneratorMock = null;
+    protected $repositoryMockForContentWithoutFields = null;
     protected ?VersionInfo $repoVersionInfo = null;
     protected ?RepoContent $repoContent = null;
     protected ?RepoContent $repoContentWithoutFields = null;
 
     /** @var \Ibexa\Contracts\Core\Repository\Values\Content\Field[] */
     protected ?array $internalFields = null;
-    protected null|FieldDefinitionCollection $fieldDefinitions = null;
-    protected null|ContentTypeService|MockObject $contentTypeServiceMock = null;
-    protected null|FieldTypeService|MockObject $fieldTypeServiceMock = null;
-    protected null|FieldType|MockObject $fieldTypeMock = null;
+    protected $fieldDefinitions = null;
+    protected $contentTypeServiceMock = null;
+    protected $fieldTypeServiceMock = null;
+    protected $fieldTypeMock = null;
 
     /**
      * @see \PHPUnit\Framework\TestCase

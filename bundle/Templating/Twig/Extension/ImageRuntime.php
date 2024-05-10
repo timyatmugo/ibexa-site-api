@@ -60,7 +60,7 @@ class ImageRuntime
                     $exception->getMessage()
                 )
             );
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $exception) {
             $this->logger->error(
                 sprintf(
                     "Couldn't create variation '%s' for image with id %s because an image could not be created from the given input: %s",

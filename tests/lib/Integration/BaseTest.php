@@ -141,7 +141,7 @@ abstract class BaseTest extends APIBaseTest
         try {
             $content->nonExistentProperty;
             self::fail('This property should not be found');
-        } catch (PropertyNotFoundException) {
+        } catch (PropertyNotFoundException $e) {
             // Do nothing
         }
     }
@@ -184,7 +184,7 @@ abstract class BaseTest extends APIBaseTest
         try {
             $contentInfo->nonExistentProperty;
             self::fail('This property should not be found');
-        } catch (PropertyNotFoundException) {
+        } catch (PropertyNotFoundException $e) {
             // Do nothing
         }
     }
@@ -253,7 +253,7 @@ abstract class BaseTest extends APIBaseTest
         try {
             $field->nonExistentProperty;
             self::fail('This property should not be found');
-        } catch (PropertyNotFoundException) {
+        } catch (PropertyNotFoundException $e) {
             // Do nothing
         }
     }
@@ -307,7 +307,7 @@ abstract class BaseTest extends APIBaseTest
         try {
             $location->nonExistentProperty;
             self::fail('This property should not be found');
-        } catch (PropertyNotFoundException) {
+        } catch (PropertyNotFoundException $e) {
             // Do nothing
         }
     }

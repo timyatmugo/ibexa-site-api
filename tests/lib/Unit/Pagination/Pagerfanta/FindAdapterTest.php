@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class FindAdapterTest extends TestCase
 {
-    protected FindService|MockObject $findService;
+    protected $findService;
 
     protected function setUp(): void
     {

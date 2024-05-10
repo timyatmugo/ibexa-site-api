@@ -567,7 +567,7 @@ final class SiteApiTest extends AbstractParserTestCase
     public function testCrossSiteaccessRoutingEnabledConfigurationInvalid(
         $configurationValue,
         string $exceptionClass,
-        string $exceptionMessage,
+        string $exceptionMessage
     ): void {
         $this->expectException($exceptionClass);
         $exceptionMessage = preg_quote($exceptionMessage, '/');
@@ -592,7 +592,7 @@ final class SiteApiTest extends AbstractParserTestCase
     public function testCrossSiteaccessRoutingPreferMainLanguageConfigurationInvalid(
         $configurationValue,
         string $exceptionClass,
-        string $exceptionMessage,
+        string $exceptionMessage
     ): void {
         $this->expectException($exceptionClass);
         $exceptionMessage = preg_quote($exceptionMessage, '/');
@@ -647,7 +647,7 @@ final class SiteApiTest extends AbstractParserTestCase
     public function testCrossSiteaccessRoutingExternalSubtreeRootsConfigurationInvalid(
         $configurationValue,
         string $exceptionClass,
-        string $exceptionMessage,
+        string $exceptionMessage
     ): void {
         $this->expectException($exceptionClass);
         $exceptionMessage = preg_quote($exceptionMessage, '/');
@@ -702,7 +702,7 @@ final class SiteApiTest extends AbstractParserTestCase
     public function testCrossSiteaccessRoutingIncludedSiteaccessesConfigurationInvalid(
         $configurationValue,
         string $exceptionClass,
-        string $exceptionMessage,
+        string $exceptionMessage
     ): void {
         $this->expectException($exceptionClass);
         $exceptionMessage = preg_quote($exceptionMessage, '/');
@@ -727,7 +727,7 @@ final class SiteApiTest extends AbstractParserTestCase
     public function testCrossSiteaccessRoutingIncludedSiteaccessGroupsConfigurationInvalid(
         $configurationValue,
         string $exceptionClass,
-        string $exceptionMessage,
+        string $exceptionMessage
     ): void {
         $this->expectException($exceptionClass);
         $exceptionMessage = preg_quote($exceptionMessage, '/');
@@ -752,7 +752,7 @@ final class SiteApiTest extends AbstractParserTestCase
     public function testCrossSiteaccessRoutingExcludedSiteaccessesConfigurationInvalid(
         $configurationValue,
         string $exceptionClass,
-        string $exceptionMessage,
+        string $exceptionMessage
     ): void {
         $this->expectException($exceptionClass);
         $exceptionMessage = preg_quote($exceptionMessage, '/');
@@ -777,7 +777,7 @@ final class SiteApiTest extends AbstractParserTestCase
     public function testCrossSiteaccessRoutingExcludedSiteaccessGroupsConfigurationInvalid(
         $configurationValue,
         string $exceptionClass,
-        string $exceptionMessage,
+        string $exceptionMessage
     ): void {
         $this->expectException($exceptionClass);
         $exceptionMessage = preg_quote($exceptionMessage, '/');
