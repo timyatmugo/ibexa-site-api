@@ -98,9 +98,7 @@ final class FindServiceAdapter implements SearchService
         return $siteContent->innerContent;
     }
 
-    public function suggest(string $prefix, array $fieldPaths = [], int $limit = 10, ?Criterion $filter = null): void
-    {
-    }
+    public function suggest(string $prefix, array $fieldPaths = [], int $limit = 10, ?Criterion $filter = null): void {}
 
     public function supports(int $capabilityFlag): bool
     {

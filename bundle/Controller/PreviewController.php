@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Netgen\Bundle\IbexaSiteApiBundle\Controller;
 
+use eZ\Publish\Core\MVC\Symfony\View\ViewManagerInterface;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\Content\Location;
 use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
@@ -40,9 +41,10 @@ class PreviewController extends BasePreviewController
         Content $content,
         SiteAccess $previewSiteAccess,
         Request $request,
-        $language
+        string $language,
+        string $viewType = ViewManagerInterface::VIEW_TYPE_FULL
     ): Request {
-        $request = parent::getForwardRequest($location, $content, $previewSiteAccess, $request, $language);
+        $request = parent::getForwardRequest($location, $content, $previewSiteAccess, $request, $language, $viewType);
 
         $this->injectAttributes($request, $previewSiteAccess, $language);
 
@@ -82,6 +84,7 @@ class PreviewController extends BasePreviewController
     {
         $content = $request->attributes->get('content');
         $location = $request->attributes->get('location');
+
         /** @var \Ibexa\Contracts\Core\Repository\Values\Content\Content $content */
         /** @var \Ibexa\Contracts\Core\Repository\Values\Content\Location $location */
         $siteContent = $this->site->getLoadService()->loadContentForPreview(

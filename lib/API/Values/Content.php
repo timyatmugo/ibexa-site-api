@@ -21,6 +21,8 @@ use Pagerfanta\Pagerfanta;
  * @property-read string $name
  * @property-read string $languageCode
  * @property-read bool $isVisible
+ * @property-read \Netgen\IbexaSiteApi\API\Values\Path $path
+ * @property-read \Netgen\IbexaSiteApi\API\Values\Url $url
  * @property-read \Netgen\IbexaSiteApi\API\Values\ContentInfo $contentInfo
  * @property-read \Netgen\IbexaSiteApi\API\Values\Field[]|\Netgen\IbexaSiteApi\API\Values\Fields $fields
  * @property-read ?\Netgen\IbexaSiteApi\API\Values\Location $mainLocation
@@ -35,7 +37,7 @@ use Pagerfanta\Pagerfanta;
 abstract class Content extends ValueObject
 {
     /**
-     * Returns if content has the field with the given field definition $identifier.
+     * Returns if Content has the field with the given field definition $identifier.
      */
     abstract public function hasField(string $identifier): bool;
 
@@ -48,6 +50,7 @@ abstract class Content extends ValueObject
      * Returns if content has the field with the given field $id.
      *
      * @param int $id
+     * Returns if Content has the field with the given field $id.
      */
     abstract public function hasFieldById(int $id): bool;
 
@@ -175,4 +178,33 @@ abstract class Content extends ValueObject
         int $maxPerPage = 25,
         int $currentPage = 1
     ): Pagerfanta;
+
+    /**
+     * Return related Locations from $fieldDefinitionIdentifier field using repository sudo,
+     * optionally limited by a list of $contentTypeIdentifiers.
+     *
+     * @param string[] $contentTypeIdentifiers
+     *
+     * @return \Pagerfanta\Pagerfanta Pagerfanta instance iterating over Site API Locations
+     */
+    abstract public function filterSudoFieldRelationLocations(
+        string $fieldDefinitionIdentifier,
+        array $contentTypeIdentifiers = [],
+        int $maxPerPage = 25,
+        int $currentPage = 1
+    ): Pagerfanta;
+
+    /**
+     * Return absolute path for the Content.
+     *
+     * @see \Netgen\IbexaSiteApi\API\Routing\UrlGenerator::ABSOLUTE_PATH
+     */
+    abstract public function getPath(array $parameters = []): string;
+
+    /**
+     * Return absolute URL for the Content.
+     *
+     * @see \Netgen\IbexaSiteApi\API\Routing\UrlGenerator::ABSOLUTE_URL
+     */
+    abstract public function getUrl(array $parameters = []): string;
 }

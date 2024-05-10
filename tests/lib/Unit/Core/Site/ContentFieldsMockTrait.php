@@ -14,6 +14,7 @@ use Ibexa\Core\Repository\Values\Content\Content;
 use Ibexa\Core\Repository\Values\Content\Content as RepoContent;
 use Ibexa\Core\Repository\Values\Content\VersionInfo;
 use Ibexa\Core\Repository\Values\ContentType\ContentType;
+use Netgen\IbexaSiteApi\API\Routing\UrlGenerator;
 use Netgen\IbexaSiteApi\API\Site;
 use Netgen\IbexaSiteApi\Core\Site\DomainObjectMapper;
 use PHPUnit\Framework\MockObject\MockBuilder;
@@ -25,25 +26,26 @@ use Psr\Log\NullLogger;
  */
 trait ContentFieldsMockTrait
 {
-    protected Site|MockObject|null $siteMock = null;
+    protected null|MockObject|Site $siteMock = null;
 
     /** @var \Netgen\IbexaSiteApi\Core\Site\DomainObjectMapper[] */
     protected array $domainObjectMapper = [];
 
     /** @var \Netgen\IbexaSiteApi\Core\Site\DomainObjectMapper[] */
     protected array $domainObjectMapperForContentWithoutFields = [];
-    protected CoreRepository|MockObject|null $repositoryMock = null;
-    protected CoreRepository|MockObject|null $repositoryMockForContentWithoutFields = null;
+    protected null|CoreRepository|MockObject $repositoryMock = null;
+    protected null|MockObject|UrlGenerator $urlGeneratorMock = null;
+    protected null|CoreRepository|MockObject $repositoryMockForContentWithoutFields = null;
     protected ?VersionInfo $repoVersionInfo = null;
     protected ?RepoContent $repoContent = null;
     protected ?RepoContent $repoContentWithoutFields = null;
 
     /** @var \Ibexa\Contracts\Core\Repository\Values\Content\Field[] */
     protected ?array $internalFields = null;
-    protected FieldDefinitionCollection|null $fieldDefinitions = null;
-    protected ContentTypeService|MockObject|null $contentTypeServiceMock = null;
-    protected FieldTypeService|MockObject|null $fieldTypeServiceMock = null;
-    protected FieldType|MockObject|null $fieldTypeMock = null;
+    protected null|FieldDefinitionCollection $fieldDefinitions = null;
+    protected null|ContentTypeService|MockObject $contentTypeServiceMock = null;
+    protected null|FieldTypeService|MockObject $fieldTypeServiceMock = null;
+    protected null|FieldType|MockObject $fieldTypeMock = null;
 
     /**
      * @see \PHPUnit\Framework\TestCase
@@ -75,6 +77,7 @@ trait ContentFieldsMockTrait
         $this->domainObjectMapper[$failOnMissingField] = new DomainObjectMapper(
             $this->getSiteMock(),
             $this->getRepositoryMock(),
+            $this->getUrlGeneratorMock(),
             $failOnMissingField,
             new NullLogger(),
         );
@@ -91,6 +94,7 @@ trait ContentFieldsMockTrait
         $this->domainObjectMapperForContentWithoutFields[$failOnMissingField] = new DomainObjectMapper(
             $this->getSiteMock(),
             $this->getRepositoryMockForContentWithoutFields(),
+            $this->getUrlGeneratorMock(),
             $failOnMissingField,
             new NullLogger(),
         );
@@ -119,6 +123,19 @@ trait ContentFieldsMockTrait
         $this->repositoryMock->method('getFieldTypeService')->willReturn($fieldTypeServiceMock);
 
         return $this->repositoryMock;
+    }
+
+    protected function getUrlGeneratorMock()
+    {
+        if ($this->urlGeneratorMock !== null) {
+            return $this->urlGeneratorMock;
+        }
+
+        $this->urlGeneratorMock = $this
+            ->getMockBuilder(UrlGenerator::class)
+            ->getMock();
+
+        return $this->urlGeneratorMock;
     }
 
     protected function getRepositoryMockForContentWithoutFields()

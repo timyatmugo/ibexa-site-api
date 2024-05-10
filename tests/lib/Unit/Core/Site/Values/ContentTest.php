@@ -16,6 +16,7 @@ use Ibexa\Core\Repository\Values\Content\VersionInfo;
 use Ibexa\Core\Repository\Values\ContentType\ContentType;
 use Ibexa\Core\Repository\Values\ContentType\FieldDefinitionCollection;
 use Netgen\IbexaSiteApi\API\LoadService;
+use Netgen\IbexaSiteApi\API\Routing\UrlGenerator;
 use Netgen\IbexaSiteApi\API\Site;
 use Netgen\IbexaSiteApi\API\Values\Content as APIContent;
 use Netgen\IbexaSiteApi\Core\Site\DomainObjectMapper;
@@ -33,14 +34,15 @@ use Psr\Log\NullLogger;
  */
 final class ContentTest extends TestCase
 {
-    protected Site|MockObject|null $siteMock = null;
+    protected null|MockObject|Site $siteMock = null;
     protected ?DomainObjectMapper $domainObjectMapper = null;
-    protected MockObject|ContentService|null $contentServiceMock = null;
-    protected MockObject|ContentTypeService|null $contentTypeServiceMock = null;
-    protected FieldTypeService|MockObject|null $fieldTypeServiceMock = null;
-    protected LoadService|MockObject|null $loadServiceMock = null;
-    protected UserService|MockObject|null $userServiceMock = null;
-    protected CoreRepository|MockObject|null $repositoryMock = null;
+    protected null|ContentService|MockObject $contentServiceMock = null;
+    protected null|ContentTypeService|MockObject $contentTypeServiceMock = null;
+    protected null|FieldTypeService|MockObject $fieldTypeServiceMock = null;
+    protected null|LoadService|MockObject $loadServiceMock = null;
+    protected null|MockObject|UserService $userServiceMock = null;
+    protected null|CoreRepository|MockObject $repositoryMock = null;
+    protected null|MockObject|UrlGenerator $urlGeneratorMock = null;
 
     protected function setUp(): void
     {
@@ -214,6 +216,7 @@ final class ContentTest extends TestCase
         $this->domainObjectMapper = new DomainObjectMapper(
             $this->getSiteMock(),
             $this->getRepositoryMock(),
+            $this->getUrlGeneratorMock(),
             true,
             new NullLogger(),
         );
@@ -311,5 +314,18 @@ final class ContentTest extends TestCase
         $this->repositoryMock->method('getUserService')->willReturn($this->getUserServiceMock());
 
         return $this->repositoryMock;
+    }
+
+    protected function getUrlGeneratorMock(): MockObject|UrlGenerator
+    {
+        if ($this->urlGeneratorMock !== null) {
+            return $this->urlGeneratorMock;
+        }
+
+        $this->urlGeneratorMock = $this
+            ->getMockBuilder(UrlGenerator::class)
+            ->getMock();
+
+        return $this->urlGeneratorMock;
     }
 }

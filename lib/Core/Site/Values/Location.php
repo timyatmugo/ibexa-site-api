@@ -20,6 +20,8 @@ use Netgen\IbexaSiteApi\API\Site;
 use Netgen\IbexaSiteApi\API\Values\Content as APIContent;
 use Netgen\IbexaSiteApi\API\Values\ContentInfo as APIContentInfo;
 use Netgen\IbexaSiteApi\API\Values\Location as APILocation;
+use Netgen\IbexaSiteApi\API\Values\Path;
+use Netgen\IbexaSiteApi\API\Values\Url;
 use Netgen\IbexaSiteApi\Core\Site\DomainObjectMapper;
 use Netgen\IbexaSiteApi\Core\Site\Pagination\Pagerfanta\FilterAdapter;
 use Pagerfanta\Pagerfanta;
@@ -40,6 +42,8 @@ final class Location extends APILocation
     private VersionInfo $innerVersionInfo;
     private Site $site;
     private DomainObjectMapper $domainObjectMapper;
+    private ?Path $path = null;
+    private ?Url $url = null;
     private LoggerInterface $logger;
 
     public function __construct(array $properties, LoggerInterface $logger)
@@ -91,6 +95,15 @@ final class Location extends APILocation
 
             case 'isVisible':
                 return !$this->innerLocation->hidden && !$this->innerLocation->invisible;
+
+            case 'pathArray':
+                return $this->innerLocation->path;
+
+            case 'path':
+                return $this->internalGetPath();
+
+            case 'url':
+                return $this->internalGetUrl();
         }
 
         if (property_exists($this, $property)) {
@@ -117,6 +130,9 @@ final class Location extends APILocation
             case 'parent':
             case 'content':
             case 'isVisible':
+            case 'pathArray':
+            case 'path':
+            case 'url':
                 return true;
         }
 
@@ -240,6 +256,16 @@ final class Location extends APILocation
         return $sortClauses;
     }
 
+    public function getPath(array $parameters = []): string
+    {
+        return $this->internalGetPath()->getAbsolute($parameters);
+    }
+
+    public function getUrl(array $parameters = []): string
+    {
+        return $this->internalGetUrl()->get($parameters);
+    }
+
     private function getFilterPager(array $criteria, int $maxPerPage = 25, int $currentPage = 1): Pagerfanta
     {
         try {
@@ -313,5 +339,23 @@ final class Location extends APILocation
         }
 
         return $this->contentInfo;
+    }
+
+    private function internalGetPath(): Path
+    {
+        if ($this->path === null) {
+            $this->path = $this->domainObjectMapper->mapPath($this);
+        }
+
+        return $this->path;
+    }
+
+    private function internalGetUrl(): Url
+    {
+        if ($this->url === null) {
+            $this->url = $this->domainObjectMapper->mapUrl($this);
+        }
+
+        return $this->url;
     }
 }

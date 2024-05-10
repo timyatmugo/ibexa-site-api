@@ -13,6 +13,7 @@ use Netgen\IbexaSiteApi\API\FindService as APIFindService;
 use Netgen\IbexaSiteApi\API\LanguageResolver as APILanguageResolver;
 use Netgen\IbexaSiteApi\API\LoadService as APILoadService;
 use Netgen\IbexaSiteApi\API\RelationService as APIRelationService;
+use Netgen\IbexaSiteApi\API\Routing\UrlGenerator;
 use Netgen\IbexaSiteApi\API\Settings as BaseSettings;
 use Netgen\IbexaSiteApi\API\Site as SiteInterface;
 use Netgen\IbexaSiteApi\Core\Site\Plugins\FieldType\RelationResolver\Registry as RelationResolverRegistry;
@@ -45,6 +46,7 @@ class Site implements SiteInterface
     private ?APIFindService $findService = null;
     private ?APILoadService $loadService = null;
     private ?APIRelationService $relationService = null;
+    private UrlGenerator $urlGenerator;
 
     public function __construct(
         BaseSettings $settings,
@@ -52,6 +54,7 @@ class Site implements SiteInterface
         Repository $repository,
         SearchService $filteringSearchService,
         RelationResolverRegistry $relationResolverRegistry,
+        UrlGenerator $urlGenerator,
         ?LoggerInterface $logger = null
     ) {
         $this->settings = $settings;
@@ -63,6 +66,7 @@ class Site implements SiteInterface
         $this->filteringSearchService = $filteringSearchService;
         $this->relationResolverRegistry = $relationResolverRegistry;
         $this->logger = $logger ?? new NullLogger();
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function getSettings(): BaseSettings
@@ -136,6 +140,7 @@ class Site implements SiteInterface
             $this->domainObjectMapper = new DomainObjectMapper(
                 $this,
                 $this->repository,
+                $this->urlGenerator,
                 $this->settings->failOnMissingField,
                 $this->logger,
             );
