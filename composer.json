@@ -24,7 +24,8 @@
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
         "netgen/tagsbundle": "^5.0.x-dev",
         "netgen/ibexa-fieldtype-enhanced-link": "^1.0",
-        "composer/package-versions-deprecated": "*"
+        "composer/package-versions-deprecated": "*",
+        "phpstan/phpstan": "^1.10"
     },
     "replace": {
         "netgen/ezplatform-site-api": "*"
@@ -54,7 +55,9 @@
     },
     "scripts": {
         "test": "@php vendor/bin/phpunit --colors=always",
-        "test-integration": "@php vendor/bin/phpunit --colors=always -c phpunit-integration-legacy.xml"
+        "test-integration": "@php vendor/bin/phpunit --colors=always -c phpunit-integration-legacy.xml",
+        "phpstan": "vendor/bin/phpstan -c phpstan.neon"
+
     },
     "config": {
         "allow-plugins": false

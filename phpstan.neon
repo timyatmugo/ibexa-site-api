@@ -1,0 +1,7 @@
+parameters:
+    phpVersion: 70400 # php 7.4
+    level: 0
+    paths:
+        - bundle/
+        - lib/
+        - tests/
